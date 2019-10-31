@@ -1,5 +1,6 @@
+import Layout from '../components/Layout';
 const Index = () => {
-    return <h2>Hello next</h2>;
+	return <Layout>Hello Next</Layout>;
 };
 
 export default Index;
