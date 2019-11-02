@@ -2,7 +2,7 @@
  * Sign in component
  */
 import { useReducer } from 'react';
-import { signin } from '../../actions/auth';
+import { signin, authenticate } from '../../actions/auth';
 import Router from 'next/router';
 
 //use reducer initial state
@@ -47,7 +47,9 @@ const SignInComponent = () => {
 				//save user token to cookie
 				//save user info to local storage
 				//authenticate user
-				Router.push('/');
+				authenticate(res, () => {
+					Router.push('/');
+				});
 			}
 		});
 	};
