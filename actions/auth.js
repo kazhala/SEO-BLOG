@@ -34,6 +34,21 @@ export const signin = async user => {
 	}
 };
 
+export const signout = next => {
+	removeCookie('token');
+	removeLocalStorage('user');
+	next();
+	fetch(`${API}/signout`, {
+		method: 'GET'
+	})
+		.then(res => {
+			console.log('Sign out success');
+		})
+		.catch(err => {
+			console.log(err);
+		});
+};
+
 //set cookie
 export const setCookie = (key, value) => {
 	if (process.browser) {
@@ -53,7 +68,7 @@ export const removeCookie = key => {
 
 export const getCookie = key => {
 	if (process.browser) {
-		cookie.get(key);
+		return cookie.get(key);
 	}
 };
 

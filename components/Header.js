@@ -10,6 +10,8 @@ import {
 } from 'reactstrap';
 import { APP_NAME } from '../config';
 import Link from 'next/link';
+import { signout, isAuth } from '../actions/auth';
+import Router from 'next/router';
 
 const Header = props => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -35,6 +37,19 @@ const Header = props => {
 								<NavLink>Sign Up</NavLink>
 							</Link>
 						</NavItem>
+						{isAuth() && (
+							<NavItem>
+								<NavLink
+									onClick={() =>
+										signout(() => {
+											Router.replace('/signin');
+										})
+									}
+								>
+									Sign Out
+								</NavLink>
+							</NavItem>
+						)}
 					</Nav>
 				</Collapse>
 			</Navbar>
