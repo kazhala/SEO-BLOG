@@ -1,8 +1,9 @@
 /**
  * Sign up form main component
  */
-import { useReducer } from 'react';
-import { signup } from '../../actions/auth';
+import { useReducer, useEffect } from 'react';
+import { signup, isAuth } from '../../actions/auth';
+import Router from 'next/router';
 
 //use reducer initial state
 const initialState = {
@@ -54,6 +55,10 @@ const SignUpComponent = () => {
 		message,
 		showForm
 	} = formState;
+
+	useEffect(() => {
+		isAuth() && Router.push('/');
+	}, []);
 
 	//handle form submission
 	const handleSubmit = e => {

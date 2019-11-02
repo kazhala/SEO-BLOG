@@ -1,8 +1,8 @@
 /**
  * Sign in component
  */
-import { useReducer } from 'react';
-import { signin, authenticate } from '../../actions/auth';
+import { useReducer, useEffect } from 'react';
+import { isAuth, signin, authenticate } from '../../actions/auth';
 import Router from 'next/router';
 
 //use reducer initial state
@@ -31,9 +31,15 @@ const reducer = (state, action) => {
 	}
 };
 
-const SignInComponent = () => {
+const SignInComponent = props => {
 	const [formState, dispatch] = useReducer(reducer, initialState);
 	const { email, password, loading, error, message, showForm } = formState;
+
+	useEffect(() => {
+		if (isAuth()) {
+			Router.push('/');
+		}
+	}, []);
 
 	//handle form submission
 	const handleSubmit = e => {

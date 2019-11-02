@@ -27,19 +27,24 @@ const Header = props => {
 				<NavbarToggler onClick={toggle} />
 				<Collapse isOpen={isOpen} navbar>
 					<Nav className="ml-auto" navbar>
-						<NavItem>
-							<Link href="/signin">
-								<NavLink>Sign In</NavLink>
-							</Link>
-						</NavItem>
-						<NavItem>
-							<Link href="/signup">
-								<NavLink>Sign Up</NavLink>
-							</Link>
-						</NavItem>
+						{!isAuth() && (
+							<React.Fragment>
+								<NavItem>
+									<Link href="/signin">
+										<NavLink>Sign In</NavLink>
+									</Link>
+								</NavItem>
+								<NavItem>
+									<Link href="/signup">
+										<NavLink>Sign Up</NavLink>
+									</Link>
+								</NavItem>
+							</React.Fragment>
+						)}
 						{isAuth() && (
 							<NavItem>
 								<NavLink
+									style={{ cursor: 'pointer' }}
 									onClick={() =>
 										signout(() => {
 											Router.replace('/signin');
