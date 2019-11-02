@@ -16,3 +16,19 @@ export const signup = async user => {
 		console.log(err);
 	}
 };
+
+export const signin = async user => {
+	try {
+		let res = await fetch(`${API}/signin`, {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(user)
+		});
+		return res.json();
+	} catch (err) {
+		console.log(err);
+	}
+};
