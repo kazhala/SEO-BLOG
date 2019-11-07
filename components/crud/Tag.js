@@ -2,19 +2,19 @@ import { useReducer, useEffect } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 import { isAuth, getCookie } from '../../actions/auth';
-import { create, getCategories, removeCategory } from '../../actions/category';
+import { create, getTags, removeTag } from '../../actions/tag';
 
-//initial states
+//initial state of the reducer
 const initalState = {
   name: '',
   error: false,
   success: false,
-  categories: [],
+  tags: [],
   removed: false,
   reload: false,
 };
 
-//reducer for useReducer
+//reducer of the state
 const reducer = (state, action) => {
   switch (action.type) {
     case 'name':
@@ -41,8 +41,8 @@ const reducer = (state, action) => {
         removed: false,
         reload: !state.reload,
       };
-    case 'categories':
-      return { ...state, categories: action.payload };
+    case 'tags':
+      return { ...state, tags: action.payload };
     case 'removed':
       return {
         ...state,
@@ -59,34 +59,37 @@ const reducer = (state, action) => {
   }
 };
 
-const Category = () => {
-  const [categoryState, dispatch] = useReducer(reducer, initalState);
-  const { name, error, success, categories, removed, reload } = categoryState;
-  //get user login token
+const Tag = () => {
+  //set up useReducer
+  const [tagState, dispatch] = useReducer(reducer, initalState);
+  const { name, error, success, tags, removed, reload } = tagState;
+  //get user token
   const token = getCookie('token');
 
-  //fire useEffect when lists updates
+  //load new tags when action is fired
   useEffect(() => {
-    const loadCategories = () => {
-      getCategories().then(res => {
+    const loadTags = () => {
+      getTags().then(res => {
         console.log(res);
         if (res.error) {
           console.log(res.error);
           dispatch({ type: 'error', payload: res.error });
         } else {
-          dispatch({ type: 'categories', payload: res });
+          dispatch({ type: 'tags', payload: res });
         }
       });
     };
 
     // console.log('re0render');
-    loadCategories();
+    loadTags();
   }, [reload]);
 
-  //handle submit request
+  //submit the tag to the DB
   const handleSubmit = e => {
     e.preventDefault();
+    // console.log("create category", name);
     create({ name }, token).then(res => {
+      // console.log(res);
       if (res.error) {
         dispatch({ type: 'error', payload: res.error });
       } else {
@@ -95,15 +98,15 @@ const Category = () => {
     });
   };
 
-  //handlin inputfield change
+  //change state value of input field
   const handleChange = e => {
     dispatch({ type: 'name', payload: e.target.value });
   };
 
-  //send delete request to backend
-  const deleteCategory = slug => {
+  //handle delete request
+  const deleteTag = slug => {
     // console.log('delete', slug);
-    removeCategory(slug, token).then(res => {
+    removeTag(slug, token).then(res => {
       if (res.error) {
         dispatch({ type: 'error', payload: res.error });
       } else {
@@ -112,34 +115,32 @@ const Category = () => {
     });
   };
 
-  //show confirm window for deletion
+  //window confirmation of delete
   const deleteConfirm = slug => {
-    let answer = window.confirm(
-      'Are you sure you want to delete this category?'
-    );
+    let answer = window.confirm('Are you sure you want to delete this tag?');
     if (answer) {
-      deleteCategory(slug);
+      deleteTag(slug);
     }
   };
 
-  //loop and display all categories
-  const showCategories = () => {
-    return categories.map((cat, index) => {
+  //loop and display the tags
+  const showTags = () => {
+    return tags.map((tag, index) => {
       return (
         <button
-          onDoubleClick={() => deleteConfirm(cat.slug)}
+          onDoubleClick={() => deleteConfirm(tag.slug)}
           title="Double click to delete"
           key={index}
           className="btn btn-outline-primary mr-1 ml-1 mt-3"
         >
-          {cat.name}
+          {tag.name}
         </button>
       );
     });
   };
 
-  //show input form
-  const newCategoryForm = () => (
+  // tag input form
+  const newTagForm = () => (
     <form onSubmit={handleSubmit}>
       <div className="form-group">
         <label className="text-muted">Name</label>
@@ -159,23 +160,23 @@ const Category = () => {
 
   const showSuccess = () => {
     if (success) {
-      return <p className="text-success">Category is created</p>;
+      return <p className="text-success">Tag is created</p>;
     }
   };
 
   const showError = () => {
     if (error) {
-      return <p className="text-danger">Category already exists</p>;
+      return <p className="text-danger">Tag already exists</p>;
     }
   };
 
   const showRemoved = () => {
     if (removed) {
-      return <p className="text-danger">Category is removed</p>;
+      return <p className="text-danger">Tag is removed</p>;
     }
   };
 
-  //remove the messages when mouse move
+  //clear the detail when mouse move
   const mouseMoveHandler = e => {
     dispatch({ type: 'clear' });
   };
@@ -187,11 +188,11 @@ const Category = () => {
       {showRemoved()}
 
       <div onMouseMove={mouseMoveHandler}>
-        {newCategoryForm()}
-        {showCategories()}
+        {newTagForm()}
+        {showTags()}
       </div>
     </React.Fragment>
   );
 };
 
-export default Category;
+export default Tag;

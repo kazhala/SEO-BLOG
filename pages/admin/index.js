@@ -1,6 +1,6 @@
-import Layout from "../../components/Layout";
-import Admin from "../../components/auth/Admin";
-import Link from "next/link";
+import Layout from '../../components/Layout';
+import Admin from '../../components/auth/Admin';
+import Link from 'next/link';
 
 const AdminIndex = props => {
   return (
@@ -16,6 +16,11 @@ const AdminIndex = props => {
                 <li className="list-group-item">
                   <Link href="/admin/crud/category-tag">
                     <a>Create Category</a>
+                  </Link>
+                </li>
+                <li className="list-group-item">
+                  <Link href="/admin/crud/category-tag">
+                    <a>Create Tag</a>
                   </Link>
                 </li>
               </ul>
