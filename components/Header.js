@@ -15,6 +15,7 @@ import Router from "next/router";
 import NProgress from "nprogress";
 import ".././node_modules/nprogress/nprogress.css";
 
+//progress bar like youtube
 Router.onRouteChangeStart = url => NProgress.start();
 Router.onRouteChangeComplete = url => NProgress.done();
 Router.onRouteChangeError = url => NProgress.done();
