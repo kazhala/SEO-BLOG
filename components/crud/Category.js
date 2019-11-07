@@ -1,27 +1,31 @@
-import { useReducer, useEffect } from "react";
-import Link from "next/link";
-import Router from "next/router";
-import { isAuth, getCookie } from "../../actions/auth";
-import { create } from "../../actions/category";
+import { useReducer, useEffect } from 'react';
+import Link from 'next/link';
+import Router from 'next/router';
+import { isAuth, getCookie } from '../../actions/auth';
+import { create } from '../../actions/category';
 
 const initalState = {
-  name: "",
+  name: '',
   error: false,
   success: false,
   categories: [],
-  removed: false
+  removed: false,
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case "name":
+    case 'name':
       return {
         ...state,
         name: action.payload,
         error: false,
         success: false,
-        removed: ""
+        removed: '',
       };
+    case 'error':
+      return { ...state, error: action.payload, success: false };
+    case 'success':
+      return { ...state, error: false, success: true, name: '' };
     default:
       return state;
   }
@@ -30,15 +34,23 @@ const reducer = (state, action) => {
 const Category = () => {
   const [categoryState, dispatch] = useReducer(reducer, initalState);
   const { name, error, success, categories, removed } = categoryState;
-  const token = getCookie("token");
+  const token = getCookie('token');
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log("create category");
+    // console.log("create category", name);
+    create({ name }, token).then(res => {
+      console.log(res);
+      if (res.error) {
+        dispatch({ type: 'error', payload: res.error });
+      } else {
+        dispatch({ type: 'success' });
+      }
+    });
   };
 
   const handleChange = e => {
-    dispatch({ type: "name", payload: e.target.value });
+    dispatch({ type: 'name', payload: e.target.value });
   };
 
   const newCategoryForm = () => (

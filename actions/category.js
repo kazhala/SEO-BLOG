@@ -8,7 +8,7 @@ export const create = async (category, token) => {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authentication: `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       },
       body: JSON.stringify(category)
     });
