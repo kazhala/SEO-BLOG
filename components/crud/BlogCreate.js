@@ -9,6 +9,7 @@ import { getTags } from '../../actions/tag';
 import { createBlog } from '../../actions/blog';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 import '../../node_modules/react-quill/dist/quill.snow.css';
+import { Quillformats, Quillmodules } from '../../helpers/quill';
 
 const initialState = {
   body: {},
@@ -161,7 +162,7 @@ const BlogCreate = props => {
     } else {
       all.splice(clickedCategory, 1);
     }
-    console.log(all);
+    // console.log(all);
     dispatch({ type: 'checkedCat', payload: all });
     formData.set('categories', all);
     // dispatch();
@@ -175,7 +176,7 @@ const BlogCreate = props => {
     } else {
       all.splice(clickedTag, 1);
     }
-    console.log(all);
+    // console.log(all);
     dispatch({ type: 'checkedTag', payload: all });
     formData.set('tags', all);
     // dispatch();
@@ -213,6 +214,14 @@ const BlogCreate = props => {
     );
   };
 
+  const showError = () => {
+    return error && <div className="alert alert-danger">{error}</div>;
+  };
+
+  const showSuccess = () => {
+    return success && <div className="alert alert-success">{success}</div>;
+  };
+
   const createBlogForm = () => {
     return (
       <form onSubmit={publishBlog}>
@@ -227,8 +236,8 @@ const BlogCreate = props => {
 
         <div className="form-group">
           <ReactQuill
-            modules={BlogCreate.modules}
-            formats={BlogCreate.formats}
+            modules={Quillmodules}
+            formats={Quillformats}
             value={body}
             placeholder="Write something amazing..."
             onChange={handleBody}
@@ -245,18 +254,14 @@ const BlogCreate = props => {
   };
 
   return (
-    <div className="container-fluid">
+    <div className="container-fluid pb-5">
       <div className="row">
         <div className="col-md-8">
           {createBlogForm()}
-          <hr />
-          {JSON.stringify(title)}
-          <hr />
-          {JSON.stringify(body)}
-          <hr />
-          {JSON.stringify(tags)}
-          <hr />
-          {JSON.stringify(categories)}
+          <div className="pt-3">
+            {showError()}
+            {showSuccess()}
+          </div>
         </div>
         <div className="col-md-4">
           <div>
@@ -276,6 +281,7 @@ const BlogCreate = props => {
               </label>
             </div>
           </div>
+
           <div>
             <h5>Categories</h5>
             <hr />
@@ -296,33 +302,4 @@ const BlogCreate = props => {
   );
 };
 
-//react quill config
-BlogCreate.modules = {
-  toolbar: [
-    [{ header: '1' }, { header: '2' }, { header: [3, 4, 5, 6] }, { font: [] }],
-    [{ size: [] }],
-    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-    [{ list: 'ordered' }, { list: 'bullet' }],
-    ['link', 'image', 'video'],
-    ['clean'],
-    ['code-block'],
-  ],
-};
-
-BlogCreate.formats = [
-  'header',
-  'font',
-  'size',
-  'bold',
-  'italic',
-  'underline',
-  'strike',
-  'blockquote',
-  'list',
-  'bullet',
-  'link',
-  'image',
-  'video',
-  'code-block',
-];
 export default withRouter(BlogCreate);
