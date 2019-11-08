@@ -18,6 +18,8 @@ const initialState = {
   formData: '',
   title: '',
   hidePublishButton: false,
+  categories: [],
+  tags: [],
 };
 
 const reducer = (state, action) => {
@@ -28,10 +30,23 @@ const reducer = (state, action) => {
         title: action.payload.value,
         error: '',
       };
-    // case 'photo':
-    //   return { ...state };
     case 'init':
+      //check if there is data in localStorage and save it in state
+      return {
+        ...state,
+        body: action.payload.storedBlogData
+          ? action.payload.storedBlogData
+          : {},
+        categories: action.payload.cat,
+        tags: action.payload.tag,
+      };
+    case 'formData':
       return { ...state, formData: new FormData() };
+    case 'error':
+      return {
+        ...state,
+        error: action.payload,
+      };
     case 'body':
       return { ...state, body: action.payload };
     default:
@@ -44,6 +59,7 @@ const BlogCreate = props => {
 
   const [blogState, dispatch] = useReducer(reducer, initialState);
 
+  //deconstruct from state
   const {
     body,
     error,
@@ -52,10 +68,42 @@ const BlogCreate = props => {
     formData,
     title,
     hidePublishButton,
+    tags,
+    categories,
   } = blogState;
 
+  //re-run the effect when the page reload
   useEffect(() => {
-    dispatch({ type: 'init' });
+    //check loaclstorage if there's data
+    const blogFromLS = () => {
+      if (typeof window === 'undefined') {
+        return false;
+      }
+      if (localStorage.getItem('blog')) {
+        return JSON.parse(localStorage.getItem('blog'));
+      } else {
+        return false;
+      }
+    };
+
+    const initData = storedBlogData => {
+      getCategories().then(cat => {
+        if (cat.error) {
+          dispatch({ type: 'error', payload: cat.error });
+        } else {
+          getTags().then(tag => {
+            if (tag.error) {
+              dispatch({ type: 'error', payload: tag.error });
+            } else {
+              dispatch({ type: 'init', payload: { storedBlogData, cat, tag } });
+            }
+          });
+        }
+      });
+    };
+    dispatch({ type: 'formData' });
+    const storedBlogData = blogFromLS();
+    initData(storedBlogData);
   }, [router]);
 
   const publishBlog = e => {
@@ -64,8 +112,9 @@ const BlogCreate = props => {
   };
 
   const handleChange = (e, name) => {
-    // console.log(e.target.value);
+    //check the incoming event type
     const value = name === 'photo' ? e.target.files[0] : e.target.value;
+    //set the form data
     formData.set(name, value);
     dispatch({ type: name, payload: { value, formData } });
   };
@@ -74,6 +123,7 @@ const BlogCreate = props => {
     // console.log(event);
     formData.set('body', e);
     dispatch({ type: 'body', payload: e });
+    //save the body detail in localStorage
     if (typeof window !== 'undefined') {
       localStorage.setItem('blog', JSON.stringify(e));
     }
@@ -117,9 +167,15 @@ const BlogCreate = props => {
       {JSON.stringify(title)}
       <hr />
       {JSON.stringify(body)}
+      <hr />
+      {JSON.stringify(tags)}
+      <hr />
+      {JSON.stringify(categories)}
     </div>
   );
 };
+
+//react quill config
 BlogCreate.modules = {
   toolbar: [
     [{ header: '1' }, { header: '2' }, { header: [3, 4, 5, 6] }, { font: [] }],
