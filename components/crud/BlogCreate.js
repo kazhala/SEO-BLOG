@@ -20,6 +20,8 @@ const initialState = {
   hidePublishButton: false,
   categories: [],
   tags: [],
+  checkedCat: [],
+  checkedTag: [],
 };
 
 const reducer = (state, action) => {
@@ -49,6 +51,8 @@ const reducer = (state, action) => {
       };
     case 'body':
       return { ...state, body: action.payload };
+    case 'checkedCat':
+      return { ...state, error: '', checkedCat: action.payload };
     default:
       return state;
   }
@@ -70,6 +74,8 @@ const BlogCreate = props => {
     hidePublishButton,
     tags,
     categories,
+    checkedCat,
+    checkedTag,
   } = blogState;
 
   //re-run the effect when the page reload
@@ -129,12 +135,30 @@ const BlogCreate = props => {
     }
   };
 
+  const handleToggle = cId => {
+    const clickedCategory = checkedCat.indexOf(cId);
+    const all = [...checkedCat];
+    if (clickedCategory === -1) {
+      all.push(cId);
+    } else {
+      all.splice(clickedCategory, 1);
+    }
+    console.log(all);
+    dispatch({ type: 'checkedCat', payload: all });
+    formData.set('categories', all);
+    // dispatch();
+  };
+
   const showCategories = () => {
     return (
       categories &&
       categories.map((c, i) => (
         <li key={i} className="list-unstyled">
-          <input type="checkbox" className="mr-2" />
+          <input
+            onChange={() => handleToggle(c._id)}
+            type="checkbox"
+            className="mr-2"
+          />
           <label className="form-check-label">{c.name}</label>
         </li>
       ))
