@@ -59,7 +59,7 @@ const BlogCreate = props => {
 
   const [blogState, dispatch] = useReducer(reducer, initialState);
 
-  //deconstruct from state
+  //deConstruct from state
   const {
     body,
     error,
@@ -129,6 +129,30 @@ const BlogCreate = props => {
     }
   };
 
+  const showCategories = () => {
+    return (
+      categories &&
+      categories.map((c, i) => (
+        <li key={i} className="list-unstyled">
+          <input type="checkbox" className="mr-2" />
+          <label className="form-check-label">{c.name}</label>
+        </li>
+      ))
+    );
+  };
+
+  const showTags = () => {
+    return (
+      tags &&
+      tags.map((t, i) => (
+        <li key={i} className="list-unstyled">
+          <input type="checkbox" className="mr-2" />
+          <label className="form-check-label">{t.name}</label>
+        </li>
+      ))
+    );
+  };
+
   const createBlogForm = () => {
     return (
       <form onSubmit={publishBlog}>
@@ -161,16 +185,36 @@ const BlogCreate = props => {
   };
 
   return (
-    <div>
-      {createBlogForm()}
-      <hr />
-      {JSON.stringify(title)}
-      <hr />
-      {JSON.stringify(body)}
-      <hr />
-      {JSON.stringify(tags)}
-      <hr />
-      {JSON.stringify(categories)}
+    <div className="container-fluid">
+      <div className="row">
+        <div className="col-md-8">
+          {createBlogForm()}
+          <hr />
+          {JSON.stringify(title)}
+          <hr />
+          {JSON.stringify(body)}
+          <hr />
+          {JSON.stringify(tags)}
+          <hr />
+          {JSON.stringify(categories)}
+        </div>
+        <div className="col-md-4">
+          <div>
+            <h5>Categories</h5>
+            <hr />
+            <ul style={{ maxHeight: '200px', overflowY: 'scroll' }}>
+              {showCategories()}
+            </ul>
+          </div>
+          <div>
+            <h5>Tags</h5>
+            <hr />
+            <ul style={{ maxHeight: '200px', overflowY: 'scroll' }}>
+              {showTags()}
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
