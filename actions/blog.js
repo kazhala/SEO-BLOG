@@ -3,7 +3,7 @@ import { API } from '../config';
 
 export const createBlog = async (blog, token) => {
   try {
-    const res = fetch(`${API}/blog`, {
+    const res = await fetch(`${API}/blog`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',

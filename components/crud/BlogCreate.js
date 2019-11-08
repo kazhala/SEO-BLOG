@@ -27,11 +27,18 @@ const initialState = {
 const reducer = (state, action) => {
   switch (action.type) {
     case 'title':
-      return {
-        ...state,
-        title: action.payload.value,
-        error: '',
-      };
+      return { ...state, title: action.payload, error: '' };
+    case 'formData':
+      return { ...state, formData: new FormData() };
+    case 'error':
+      return { ...state, error: action.payload };
+    case 'body':
+      return { ...state, body: action.payload };
+    case 'checkedCat':
+      return { ...state, error: '', checkedCat: action.payload };
+    case 'checkedTag':
+      return { ...state, error: '', checkedTag: action.payload };
+
     case 'init':
       //check if there is data in localStorage and save it in state
       return {
@@ -42,17 +49,16 @@ const reducer = (state, action) => {
         categories: action.payload.cat,
         tags: action.payload.tag,
       };
-    case 'formData':
-      return { ...state, formData: new FormData() };
-    case 'error':
+    case 'success':
       return {
         ...state,
-        error: action.payload,
+        error: '',
+        title: '',
+        body: {},
+        success: `A new blog titled ${action.payload.title} is created`,
+        checkedCat: [],
+        checkedTag: [],
       };
-    case 'body':
-      return { ...state, body: action.payload };
-    case 'checkedCat':
-      return { ...state, error: '', checkedCat: action.payload };
     default:
       return state;
   }
@@ -77,6 +83,8 @@ const BlogCreate = props => {
     checkedCat,
     checkedTag,
   } = blogState;
+
+  const token = getCookie('token');
 
   //re-run the effect when the page reload
   useEffect(() => {
@@ -112,9 +120,17 @@ const BlogCreate = props => {
     initData(storedBlogData);
   }, [router]);
 
+  //handle form submission
   const publishBlog = e => {
     e.preventDefault();
-    console.log('ready to publish blog');
+    // console.log('ready to publish blog');
+    createBlog(formData, token).then(res => {
+      if (res.error) {
+        dispatch({ type: 'error', payload: res.error });
+      } else {
+        dispatch({ type: 'success', payload: res });
+      }
+    });
   };
 
   const handleChange = (e, name) => {
@@ -122,7 +138,9 @@ const BlogCreate = props => {
     const value = name === 'photo' ? e.target.files[0] : e.target.value;
     //set the form data
     formData.set(name, value);
-    dispatch({ type: name, payload: { value, formData } });
+    if (name !== 'photo') {
+      dispatch({ type: name, payload: value });
+    }
   };
 
   const handleBody = e => {
@@ -135,7 +153,7 @@ const BlogCreate = props => {
     }
   };
 
-  const handleToggle = cId => {
+  const handleCatToggle = cId => {
     const clickedCategory = checkedCat.indexOf(cId);
     const all = [...checkedCat];
     if (clickedCategory === -1) {
@@ -149,13 +167,27 @@ const BlogCreate = props => {
     // dispatch();
   };
 
+  const handleTagToggle = tId => {
+    const clickedTag = checkedTag.indexOf(tId);
+    const all = [...checkedTag];
+    if (clickedTag === -1) {
+      all.push(tId);
+    } else {
+      all.splice(clickedTag, 1);
+    }
+    console.log(all);
+    dispatch({ type: 'checkedTag', payload: all });
+    formData.set('tags', all);
+    // dispatch();
+  };
+
   const showCategories = () => {
     return (
       categories &&
       categories.map((c, i) => (
         <li key={i} className="list-unstyled">
           <input
-            onChange={() => handleToggle(c._id)}
+            onChange={() => handleCatToggle(c._id)}
             type="checkbox"
             className="mr-2"
           />
@@ -170,7 +202,11 @@ const BlogCreate = props => {
       tags &&
       tags.map((t, i) => (
         <li key={i} className="list-unstyled">
-          <input type="checkbox" className="mr-2" />
+          <input
+            onChange={() => handleTagToggle(t._id)}
+            type="checkbox"
+            className="mr-2"
+          />
           <label className="form-check-label">{t.name}</label>
         </li>
       ))
@@ -223,6 +259,23 @@ const BlogCreate = props => {
           {JSON.stringify(categories)}
         </div>
         <div className="col-md-4">
+          <div>
+            <div className="form-group pb-2">
+              <h5>Featured image</h5>
+              <hr />
+
+              <small className="text-muted">Max size: 1mb</small>
+              <label className="btn btn-outline-info">
+                Upload featured image
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={e => handleChange(e, 'photo')}
+                  hidden
+                />
+              </label>
+            </div>
+          </div>
           <div>
             <h5>Categories</h5>
             <hr />
