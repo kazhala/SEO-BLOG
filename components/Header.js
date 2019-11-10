@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 import {
   Collapse,
   Navbar,
@@ -6,14 +6,14 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink
-} from "reactstrap";
-import { APP_NAME } from "../config";
-import Link from "next/link";
-import { signout, isAuth } from "../actions/auth";
-import Router from "next/router";
-import NProgress from "nprogress";
-import ".././node_modules/nprogress/nprogress.css";
+  NavLink,
+} from 'reactstrap';
+import { APP_NAME } from '../config';
+import Link from 'next/link';
+import { signout, isAuth } from '../actions/auth';
+import Router from 'next/router';
+import NProgress from 'nprogress';
+import '.././node_modules/nprogress/nprogress.css';
 
 //progress bar like youtube
 Router.onRouteChangeStart = url => NProgress.start();
@@ -34,6 +34,11 @@ const Header = props => {
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="ml-auto" navbar>
+            <NavItem>
+              <Link href="/blogs">
+                <NavLink>Blogs</NavLink>
+              </Link>
+            </NavItem>
             {!isAuth() && (
               <React.Fragment>
                 <NavItem>
@@ -48,6 +53,7 @@ const Header = props => {
                 </NavItem>
               </React.Fragment>
             )}
+
             {isAuth() && isAuth().role === 1 && (
               <NavItem>
                 <Link href="/admin">
@@ -55,6 +61,7 @@ const Header = props => {
                 </Link>
               </NavItem>
             )}
+
             {isAuth() && isAuth().role === 0 && (
               <NavItem>
                 <Link href="/user">
@@ -62,13 +69,14 @@ const Header = props => {
                 </Link>
               </NavItem>
             )}
+
             {isAuth() && (
               <NavItem>
                 <NavLink
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: 'pointer' }}
                   onClick={() =>
                     signout(() => {
-                      Router.replace("/signin");
+                      Router.replace('/signin');
                     })
                   }
                 >
