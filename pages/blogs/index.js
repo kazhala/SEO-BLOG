@@ -5,7 +5,8 @@ import { useReducer } from 'react';
 import { listBlogsWithCategoriesAndTags } from '../../actions/blog';
 import { API } from '../../config';
 
-const Blogs = () => {
+const Blogs = props => {
+  const { blogs, categories, tags, size } = props;
   return (
     <Layout>
       <main>
@@ -23,12 +24,28 @@ const Blogs = () => {
         </div>
         <div className="container-fluid">
           <div className="row">
-            <div className="col-md-12">Show all blogs</div>
+            <div className="col-md-12">{JSON.stringify(blogs)}</div>
           </div>
         </div>
       </main>
     </Layout>
   );
+};
+
+//serverside render
+Blogs.getInitialProps = () => {
+  return listBlogsWithCategoriesAndTags().then(res => {
+    if (res.error) {
+      console.log(res.error);
+    } else {
+      return {
+        blogs: res.blogs,
+        categories: res.categories,
+        tags: res.tags,
+        size: res.size,
+      };
+    }
+  });
 };
 
 export default Blogs; //getInitialProps
