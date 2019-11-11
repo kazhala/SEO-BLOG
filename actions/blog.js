@@ -36,3 +36,14 @@ export const listBlogsWithCategoriesAndTags = async (skip, limit) => {
     console.log(err);
   }
 };
+
+export const singleBlog = async slug => {
+  try {
+    const res = await fetch(`${API}/blog/${slug}`, {
+      method: 'GET',
+    });
+    return res.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
