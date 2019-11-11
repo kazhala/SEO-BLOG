@@ -2,16 +2,13 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { withRouter } from 'next/router';
 import Layout from '../../components/Layout';
-import { useReducer } from 'react';
+import { useState } from 'react';
 import { listBlogsWithCategoriesAndTags } from '../../actions/blog';
-import moment from 'moment';
-import renderHTML from 'react-render-html';
 import Card from '../../components/blog/Card';
-import { API, DOMAIN, APP_NAME, FB_APP_ID } from '../../config';
+import { DOMAIN, APP_NAME, FB_APP_ID } from '../../config';
 
 const Blogs = props => {
-  const { blogs, categories, tags, size, router } = props;
-
+  //seo search optimisation (meta tags)
   const head = () => (
     <Head>
       <title>Programming blogs | {APP_NAME}</title>
@@ -20,6 +17,8 @@ const Blogs = props => {
         content="Programming blogs and tutorials on react node next vue php laravel and web developemnt"
       />
       <link rel="canonical" href={`${DOMAIN}${router.pathname}`} />
+
+      {/* below is for facebook link share data show */}
       <meta
         property="og:title"
         content={`Latest web development tutorials | ${APP_NAME}`}
@@ -44,6 +43,55 @@ const Blogs = props => {
     </Head>
   );
 
+  const {
+    blogs,
+    categories,
+    tags,
+    totalBlogs,
+    router,
+    blogsLimit,
+    blogSkip,
+  } = props;
+
+  //keep track of the blog limit per load (default 2)
+  const [limit, setLimit] = useState(blogsLimit);
+  //keep track of the blog skipped
+  const [skip, setSkip] = useState(0);
+  //keep track of the size of the data
+  const [size, setSize] = useState(totalBlogs);
+  //new loadedBlogs from load more
+  const [loadedBlogs, setLoadedBlogs] = useState([]);
+
+  const loadMore = () => {
+    //number of entry to skip
+    let toSkip = skip + limit;
+    listBlogsWithCategoriesAndTags(toSkip, limit).then(data => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        setLoadedBlogs([...loadedBlogs, ...data.blogs]);
+        //for check if we stll need the load more button
+        setSize(data.size);
+        //update the skip
+        setSkip(toSkip);
+      }
+    });
+  };
+
+  //only display the load more button when the new data loaded is greater than 0
+  // and  is greater than or equal to the limit we set
+  const loadMoreButton = () => {
+    return (
+      size > 0 &&
+      size >= limit && (
+        <button onClick={loadMore} className="btn btn-outline-primary btn-lg">
+          Load more
+        </button>
+      )
+    );
+  };
+
+  //initial display of all the blogs (from first load)
   const showAllBlogs = () => {
     return blogs.map((blog, index) => (
       <article key={index}>
@@ -69,6 +117,15 @@ const Blogs = props => {
     ));
   };
 
+  //display the newly loaded blogs from load more
+  const showLoadedBlogs = () => {
+    return loadedBlogs.map((blog, i) => (
+      <article key={i}>
+        <Card blog={blog} />
+      </article>
+    ));
+  };
+
   return (
     <React.Fragment>
       {head()}
@@ -90,11 +147,9 @@ const Blogs = props => {
               </section>
             </header>
           </div>
-          <div className="container-fluid">
-            <div className="row">
-              <div className="col-md-12">{showAllBlogs()}</div>
-            </div>
-          </div>
+          <div className="container-fluid">{showAllBlogs()}</div>
+          <div className="container-fluid">{showLoadedBlogs()}</div>
+          <div className="text-center pt-5 pb-5">{loadMoreButton()}</div>
         </main>
       </Layout>
     </React.Fragment>
@@ -103,7 +158,9 @@ const Blogs = props => {
 
 //serverside render
 Blogs.getInitialProps = () => {
-  return listBlogsWithCategoriesAndTags().then(res => {
+  let skip = 0;
+  let limit = 2;
+  return listBlogsWithCategoriesAndTags(skip, limit).then(res => {
     if (res.error) {
       console.log(res.error);
     } else {
@@ -111,7 +168,9 @@ Blogs.getInitialProps = () => {
         blogs: res.blogs,
         categories: res.categories,
         tags: res.tags,
-        size: res.size,
+        totalBlogs: res.size,
+        blogsLimit: limit,
+        blogSkip: skip,
       };
     }
   });
