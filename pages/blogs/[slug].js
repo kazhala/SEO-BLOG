@@ -1,13 +1,29 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import Layout from '../../components/Layout';
-import { useState } from 'react';
-import { singleBlog } from '../../actions/blog';
+import { useState, useEffect } from 'react';
+import { singleBlog, listRelated } from '../../actions/blog';
 import { API, DOMAIN, APP_NAME, FB_APP_ID } from '../../config';
 import moment from 'moment';
 import renderHTML from 'react-render-html';
 
 const SingleBlog = props => {
+  const [related, setRelated] = useState([]);
+  const { blog } = props;
+
+  useEffect(() => {
+    const loadRelated = () => {
+      listRelated({ blog }).then(data => {
+        if (data.error) {
+          console.log(data.error);
+        } else {
+          setRelated(data);
+        }
+      });
+    };
+    loadRelated();
+  }, []);
+
   //seo search optimisation (meta tags)
   const head = () => (
     <Head>
@@ -32,8 +48,6 @@ const SingleBlog = props => {
       <meta property="fb:app_id" content={`${FB_APP_ID}`} />
     </Head>
   );
-
-  const { blog } = props;
 
   const showBlogCategories = () => {
     return blog.categories.map((c, i) => (
@@ -96,7 +110,7 @@ const SingleBlog = props => {
                 <div className="container pb-5">
                   <h4 className="text-center pt-5 pb-5 h2">Related blogs</h4>
                   <hr />
-                  <p>Show related blogs</p>
+                  <p>{JSON.stringify(related)}</p>
                 </div>
 
                 <div className="container pb-5">

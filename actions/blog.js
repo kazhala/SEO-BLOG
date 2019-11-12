@@ -47,3 +47,19 @@ export const singleBlog = async slug => {
     console.log(err);
   }
 };
+
+export const listRelated = async blog => {
+  try {
+    const res = await fetch(`${API}/blogs/related`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(blog),
+    });
+    return res.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
