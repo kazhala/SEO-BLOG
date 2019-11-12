@@ -6,6 +6,7 @@ import { singleBlog, listRelated } from '../../actions/blog';
 import { API, DOMAIN, APP_NAME, FB_APP_ID } from '../../config';
 import moment from 'moment';
 import renderHTML from 'react-render-html';
+import SmallCard from '../../components/blog/SmallCard';
 
 const SingleBlog = props => {
   const [related, setRelated] = useState([]);
@@ -22,7 +23,7 @@ const SingleBlog = props => {
       });
     };
     loadRelated();
-  }, []);
+  }, [blog]);
 
   //seo search optimisation (meta tags)
   const head = () => (
@@ -62,6 +63,16 @@ const SingleBlog = props => {
       <Link key={i} href={`/tags/${t.slug}}`}>
         <a className="btn btn-outline-primary mr-1 ml-1 mt-3">{t.name}</a>
       </Link>
+    ));
+  };
+
+  const showRelatedBlogs = () => {
+    return related.map((b, i) => (
+      <div key={i} className="col-md-4">
+        <article>
+          <SmallCard blog={b} />
+        </article>
+      </div>
     ));
   };
 
@@ -110,7 +121,7 @@ const SingleBlog = props => {
                 <div className="container pb-5">
                   <h4 className="text-center pt-5 pb-5 h2">Related blogs</h4>
                   <hr />
-                  <p>{JSON.stringify(related)}</p>
+                  <div className="row">{showRelatedBlogs()}</div>
                 </div>
 
                 <div className="container pb-5">
