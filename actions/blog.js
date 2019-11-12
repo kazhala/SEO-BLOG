@@ -81,7 +81,7 @@ export const list = async () => {
 
 export const removeBlog = async (slug, token) => {
   try {
-    const res = await fetch(`${API}/blog/${slug}}`, {
+    const res = await fetch(`${API}/blog/${slug}`, {
       method: 'DELETE',
       headers: {
         Accept: 'application/json',
