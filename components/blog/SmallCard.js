@@ -13,7 +13,7 @@ const SmallCard = props => {
           <a>
             <img
               className="img img-fluid"
-              style={{ maxHeight: '150px', width: 'auto' }}
+              style={{ maxHeight: '200px', width: '100%' }}
               src={`${API}/blog/photo/${blog.slug}`}
               alt={blog.title}
             />
@@ -24,9 +24,19 @@ const SmallCard = props => {
       <div className="card-body">
         <section>
           <Link href={`/blogs/${blog.slug}`}>
-            <h5 className="card-title">{blog.title}</h5>
+            <a>
+              <h5 className="card-title">{blog.title}</h5>
+            </a>
           </Link>
-          <div className="card-text">{renderHTML(blog.excerpt)}</div>
+          <div
+            className="card-text"
+            style={{
+              overflowY: 'scroll',
+              maxHeight: '250px',
+            }}
+          >
+            {renderHTML(blog.excerpt)}
+          </div>
         </section>
       </div>
 
