@@ -10,6 +10,7 @@ import { singleBlog, updateBlog } from '../../actions/blog';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 import '../../node_modules/react-quill/dist/quill.snow.css';
 import { Quillformats, Quillmodules } from '../../helpers/quill';
+import { DOMAIN } from '../../config';
 
 const initialState = {
   blog: {},
@@ -42,9 +43,19 @@ const reducer = (state, action) => {
     case 'error':
       return { ...state, error: action.payload };
     case 'body':
-      return { ...state, body: action.payload };
+      return { ...state, error: '', body: action.payload };
     case 'title':
       return { ...state, title: action.payload, error: '' };
+    case 'checkedCat':
+      return { ...state, error: '', checkedCat: action.payload };
+    case 'checkedTag':
+      return { ...state, error: '', checkedTag: action.payload };
+    case 'success':
+      return {
+        ...state,
+        title: '',
+        success: `Blog titled "${action.payload.title}" is successfully updated`,
+      };
     default:
       return state;
   }
@@ -65,6 +76,7 @@ const BlogUpdate = props => {
     checkedCat,
     checkedTag,
   } = blogState;
+  const token = getCookie('token');
 
   useEffect(() => {
     const initBlog = () => {
@@ -185,6 +197,19 @@ const BlogUpdate = props => {
 
   const editBlog = e => {
     e.preventDefault();
+    updateBlog(formData, token, router.query.slug).then(data => {
+      if (data.error) {
+        dispatch({ type: 'error', payload: data.error });
+      } else {
+        dispatch({ type: 'success' });
+        if (isAuth() && isAuth().role === 1) {
+          Router.replace(`/admin/crud/${router.query.slug}`);
+        } else if (isAuth() && isAuth().role === 0) {
+          Router.replace(`/user/crud/${router.query.slug}`);
+        }
+      }
+    });
+
     console.log('update blog');
   };
 
@@ -229,12 +254,16 @@ const BlogUpdate = props => {
     );
   };
 
+  const showError = () => {
+    return error && <div className="alert alert-danger">{error}</div>;
+  };
+
   return (
     <div className="container-fluid pb-5">
       <div className="row">
         <div className="col-md-8">
           {updateBlogForm()}
-          <div className="pt-3">show success and error msg</div>
+          <div className="pt-3">{showError()}</div>
         </div>
         <div className="col-md-4">
           <div>
