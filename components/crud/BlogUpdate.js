@@ -36,6 +36,8 @@ const reducer = (state, action) => {
         body: action.payload.blog.body,
         categories: action.payload.cat,
         tags: action.payload.tag,
+        checkedCat: action.payload.blog.categories.map(c => c._id),
+        checkedTag: action.payload.blog.tags.map(t => t._id),
       };
     case 'error':
       return { ...state, error: action.payload };
@@ -124,6 +126,24 @@ const BlogUpdate = props => {
     // dispatch();
   };
 
+  const findOutCategory = cId => {
+    const result = checkedCat.indexOf(cId);
+    if (result === -1) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  const findOutTag = tId => {
+    const result = checkedTag.indexOf(tId);
+    if (result === -1) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   const showCategories = () => {
     return (
       categories &&
@@ -133,6 +153,7 @@ const BlogUpdate = props => {
             onChange={() => handleCatToggle(c._id)}
             type="checkbox"
             className="mr-2"
+            checked={findOutCategory(c._id)}
           />
           <label className="form-check-label">{c.name}</label>
         </li>
@@ -149,6 +170,7 @@ const BlogUpdate = props => {
             onChange={() => handleTagToggle(t._id)}
             type="checkbox"
             className="mr-2"
+            checked={findOutTag(t._id)}
           />
           <label className="form-check-label">{t.name}</label>
         </li>
