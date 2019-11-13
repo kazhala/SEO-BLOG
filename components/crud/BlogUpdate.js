@@ -10,7 +10,6 @@ import { singleBlog, updateBlog } from '../../actions/blog';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 import '../../node_modules/react-quill/dist/quill.snow.css';
 import { Quillformats, Quillmodules } from '../../helpers/quill';
-import { DOMAIN } from '../../config';
 
 const initialState = {
   blog: {},
@@ -54,7 +53,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         title: '',
-        success: `Blog titled "${action.payload.title}" is successfully updated`,
+        success: 'Blog has successfully updated',
       };
     default:
       return state;
@@ -65,7 +64,6 @@ const BlogUpdate = props => {
   const { router } = props;
   const [blogState, dispatch] = useReducer(reducer, initialState);
   const {
-    blog,
     error,
     success,
     formData,
@@ -203,14 +201,12 @@ const BlogUpdate = props => {
       } else {
         dispatch({ type: 'success' });
         if (isAuth() && isAuth().role === 1) {
-          Router.replace(`/admin/crud/${router.query.slug}`);
+          Router.replace('/admin/crud/blogs');
         } else if (isAuth() && isAuth().role === 0) {
-          Router.replace(`/user/crud/${router.query.slug}`);
+          Router.replace('/user/crud/blogs');
         }
       }
     });
-
-    console.log('update blog');
   };
 
   const handleChange = (e, name) => {
@@ -258,12 +254,19 @@ const BlogUpdate = props => {
     return error && <div className="alert alert-danger">{error}</div>;
   };
 
+  const showSuccess = () => {
+    return success && <div className="alert alert-success">{success}</div>;
+  };
+
   return (
     <div className="container-fluid pb-5">
       <div className="row">
         <div className="col-md-8">
           {updateBlogForm()}
-          <div className="pt-3">{showError()}</div>
+          <div className="pt-3">
+            {showError()}
+            {showSuccess()}
+          </div>
         </div>
         <div className="col-md-4">
           <div>
