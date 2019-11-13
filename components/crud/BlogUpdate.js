@@ -10,6 +10,7 @@ import { singleBlog, updateBlog } from '../../actions/blog';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 import '../../node_modules/react-quill/dist/quill.snow.css';
 import { Quillformats, Quillmodules } from '../../helpers/quill';
+import { API } from '../../config';
 
 const initialState = {
   blog: {},
@@ -267,6 +268,13 @@ const BlogUpdate = props => {
             {showError()}
             {showSuccess()}
           </div>
+          {body && (
+            <img
+              src={`${API}/blog/photo/${router.query.slug}`}
+              style={{ width: '100%' }}
+              alt="title"
+            />
+          )}
         </div>
         <div className="col-md-4">
           <div>

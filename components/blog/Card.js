@@ -50,7 +50,7 @@ const Card = props => {
           <section>
             <img
               className="img img-fluid"
-              style={{ maxHeight: '150px', width: 'auto' }}
+              style={{ maxHeight: '300px', width: '100%' }}
               src={`${API}/blog/photo/${blog.slug}`}
               alt={blog.title}
             />
