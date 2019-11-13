@@ -18,19 +18,27 @@ const initialState = {
   formData: '',
   title: '',
   body: {},
+  categories: [],
+  tags: [],
+  checkedCat: [],
+  checkedTag: [],
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
     case 'formData':
       return { ...state, formData: new FormData() };
-    case 'blog':
+    case 'init':
       return {
         ...state,
-        blog: action.payload,
-        title: action.payload.title,
-        body: action.payload.body,
+        blog: action.payload.blog,
+        title: action.payload.blog.title,
+        body: action.payload.blog.body,
+        categories: action.payload.cat,
+        tags: action.payload.tag,
       };
+    case 'error':
+      return { ...state, error: action.payload };
     case 'body':
       return { ...state, body: action.payload };
     case 'title':
@@ -43,16 +51,42 @@ const reducer = (state, action) => {
 const BlogUpdate = props => {
   const { router } = props;
   const [blogState, dispatch] = useReducer(reducer, initialState);
-  const { blog, error, success, formData, title, body } = blogState;
+  const {
+    blog,
+    error,
+    success,
+    formData,
+    title,
+    body,
+    categories,
+    tags,
+    checkedCat,
+    checkedTag,
+  } = blogState;
 
   useEffect(() => {
     const initBlog = () => {
       if (router.query.slug) {
-        singleBlog(router.query.slug).then(data => {
-          if (data.error) {
-            console.log(data.error);
+        singleBlog(router.query.slug).then(blog => {
+          if (blog.error) {
+            console.log(blog.error);
+            dispatch({ type: 'error', payload: blog.error });
           } else {
-            dispatch({ type: 'blog', payload: data });
+            getCategories().then(cat => {
+              if (cat.error) {
+                console.log(cat.error);
+                dispatch({ type: 'error', payload: cat.error });
+              } else {
+                getTags().then(tag => {
+                  if (tag.error) {
+                    console.log(tag.error);
+                    dispatch({ type: 'error', payload: tag.error });
+                  } else {
+                    dispatch({ type: 'init', payload: { blog, cat, tag } });
+                  }
+                });
+              }
+            });
           }
         });
       }
@@ -62,12 +96,73 @@ const BlogUpdate = props => {
     initBlog();
   }, [router]);
 
+  const handleCatToggle = cId => {
+    const clickedCategory = checkedCat.indexOf(cId);
+    const all = [...checkedCat];
+    if (clickedCategory === -1) {
+      all.push(cId);
+    } else {
+      all.splice(clickedCategory, 1);
+    }
+    // console.log(all);
+    dispatch({ type: 'checkedCat', payload: all });
+    formData.set('categories', all);
+    // dispatch();
+  };
+
+  const handleTagToggle = tId => {
+    const clickedTag = checkedTag.indexOf(tId);
+    const all = [...checkedTag];
+    if (clickedTag === -1) {
+      all.push(tId);
+    } else {
+      all.splice(clickedTag, 1);
+    }
+    // console.log(all);
+    dispatch({ type: 'checkedTag', payload: all });
+    formData.set('tags', all);
+    // dispatch();
+  };
+
+  const showCategories = () => {
+    return (
+      categories &&
+      categories.map((c, i) => (
+        <li key={i} className="list-unstyled">
+          <input
+            onChange={() => handleCatToggle(c._id)}
+            type="checkbox"
+            className="mr-2"
+          />
+          <label className="form-check-label">{c.name}</label>
+        </li>
+      ))
+    );
+  };
+
+  const showTags = () => {
+    return (
+      tags &&
+      tags.map((t, i) => (
+        <li key={i} className="list-unstyled">
+          <input
+            onChange={() => handleTagToggle(t._id)}
+            type="checkbox"
+            className="mr-2"
+          />
+          <label className="form-check-label">{t.name}</label>
+        </li>
+      ))
+    );
+  };
+
   const handleBody = e => {
     formData.set('body', e);
     dispatch({ type: 'body', payload: e });
   };
 
-  const editBlog = () => {
+  const editBlog = e => {
+    e.preventDefault();
     console.log('update blog');
   };
 
@@ -118,6 +213,10 @@ const BlogUpdate = props => {
         <div className="col-md-8">
           {updateBlogForm()}
           <div className="pt-3">show success and error msg</div>
+          <hr />
+          {JSON.stringify(categories)}
+          <hr />
+          {JSON.stringify(tags)}
         </div>
         <div className="col-md-4">
           <div>
