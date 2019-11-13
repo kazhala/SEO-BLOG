@@ -13,12 +13,28 @@ import { Quillformats, Quillmodules } from '../../helpers/quill';
 
 const initialState = {
   blog: {},
+  error: '',
+  success: false,
+  formData: '',
+  title: '',
+  body: {},
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
+    case 'formData':
+      return { ...state, formData: new FormData() };
     case 'blog':
-      return { ...state, blog: action.payload };
+      return {
+        ...state,
+        blog: action.payload,
+        title: action.payload.title,
+        body: action.payload.body,
+      };
+    case 'body':
+      return { ...state, body: action.payload };
+    case 'title':
+      return { ...state, title: action.payload, error: '' };
     default:
       return state;
   }
@@ -27,7 +43,7 @@ const reducer = (state, action) => {
 const BlogUpdate = props => {
   const { router } = props;
   const [blogState, dispatch] = useReducer(reducer, initialState);
-  const { blog } = blogState;
+  const { blog, error, success, formData, title, body } = blogState;
 
   useEffect(() => {
     const initBlog = () => {
@@ -42,14 +58,65 @@ const BlogUpdate = props => {
       }
     };
 
+    dispatch({ type: 'formData' });
     initBlog();
   }, [router]);
+
+  const handleBody = e => {
+    formData.set('body', e);
+    dispatch({ type: 'body', payload: e });
+  };
+
+  const editBlog = () => {
+    console.log('update blog');
+  };
+
+  const handleChange = (e, name) => {
+    //check the incoming event type
+    const value = name === 'photo' ? e.target.files[0] : e.target.value;
+    //set the form data
+    formData.set(name, value);
+    if (name !== 'photo') {
+      dispatch({ type: name, payload: value });
+    }
+  };
+
+  const updateBlogForm = () => {
+    return (
+      <form onSubmit={editBlog}>
+        <div className="form-group">
+          <label className="text-muted">Title</label>
+          <input
+            className="form-control"
+            value={title}
+            onChange={e => handleChange(e, 'title')}
+          />
+        </div>
+
+        <div className="form-group">
+          <ReactQuill
+            modules={Quillmodules}
+            formats={Quillformats}
+            value={body}
+            placeholder="Write something amazing..."
+            onChange={handleBody}
+          />
+        </div>
+
+        <div>
+          <button className="btn btn-primary" type="submit">
+            Update
+          </button>
+        </div>
+      </form>
+    );
+  };
 
   return (
     <div className="container-fluid pb-5">
       <div className="row">
         <div className="col-md-8">
-          {JSON.stringify(blog)}
+          {updateBlogForm()}
           <div className="pt-3">show success and error msg</div>
         </div>
         <div className="col-md-4">
