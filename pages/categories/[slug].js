@@ -5,9 +5,10 @@ import { singleCategory } from '../../actions/category';
 import { API, DOMAIN, APP_NAME, FB_APP_ID } from '../../config';
 import moment from 'moment';
 import renderHTML from 'react-render-html';
+import Card from '../../components/blog/Card';
 
 const Category = props => {
-  const { category } = props;
+  const { category, blogs } = props;
 
   return (
     <React.Fragment>
@@ -17,6 +18,12 @@ const Category = props => {
             <header>
               <div className="col-md-12 pt-3">
                 <h1 className="display-4 font-weight-bold">{category.name}</h1>
+                {blogs.map((b, i) => (
+                  <div>
+                    <Card key={i} blog={b} />
+                    <hr />
+                  </div>
+                ))}
               </div>
             </header>
           </div>
@@ -31,7 +38,7 @@ Category.getInitialProps = ({ query }) => {
     if (data.error) {
       console.log(data.error);
     } else {
-      return { category: data };
+      return { category: data.category, blogs: data.blogs };
     }
   });
 };
