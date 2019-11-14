@@ -1,15 +1,11 @@
 import Head from 'next/head';
-import Link from 'next/link';
 import Layout from '../../components/Layout';
 import { readTag } from '../../actions/tag';
-import { API, DOMAIN, APP_NAME, FB_APP_ID } from '../../config';
-import moment from 'moment';
-import renderHTML from 'react-render-html';
+import { DOMAIN, APP_NAME, FB_APP_ID } from '../../config';
 import Card from '../../components/blog/Card';
-import { withRouter } from 'next/router';
 
 const Tag = props => {
-  const { query, tag, blogs, router } = props;
+  const { query, tag, blogs } = props;
 
   const head = () => {
     return (
@@ -79,4 +75,4 @@ Tag.getInitialProps = ({ query }) => {
   });
 };
 
-export default withRouter(Tag);
+export default Tag;

@@ -1,15 +1,11 @@
 import Head from 'next/head';
-import Link from 'next/link';
 import Layout from '../../components/Layout';
 import { singleCategory } from '../../actions/category';
-import { API, DOMAIN, APP_NAME, FB_APP_ID } from '../../config';
-import moment from 'moment';
-import renderHTML from 'react-render-html';
+import { DOMAIN, APP_NAME, FB_APP_ID } from '../../config';
 import Card from '../../components/blog/Card';
-import { withRouter } from 'next/router';
 
 const Category = props => {
-  const { category, blogs, router, query } = props;
+  const { category, blogs, query } = props;
 
   const head = () => {
     return (
@@ -82,4 +78,4 @@ Category.getInitialProps = ({ query }) => {
   });
 };
 
-export default withRouter(Category);
+export default Category;
