@@ -19,9 +19,7 @@ const AdminIndex = props => {
                   </Link>
                 </li>
                 <li className="list-group-item">
-                  <Link href="/admin/crud/category-tag">
-                    <a>Create Tag</a>
-                  </Link>
+                  <a href="/admin/crud/category-tag">Create Tag</a>
                 </li>
                 <li className="list-group-item">
                   <Link href="/admin/crud/blog">
