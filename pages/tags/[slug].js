@@ -1,15 +1,14 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import Layout from '../../components/Layout';
-import { singleCategory } from '../../actions/category';
+import { readTag } from '../../actions/tag';
 import { API, DOMAIN, APP_NAME, FB_APP_ID } from '../../config';
 import moment from 'moment';
 import renderHTML from 'react-render-html';
 import Card from '../../components/blog/Card';
 
-const Category = props => {
-  const { category, blogs } = props;
-
+const Tag = props => {
+  const { tag, blogs } = props;
   return (
     <React.Fragment>
       <Layout>
@@ -17,7 +16,7 @@ const Category = props => {
           <div className="container-fluid text-center">
             <header>
               <div className="col-md-12 pt-3">
-                <h1 className="display-4 font-weight-bold">{category.name}</h1>
+                <h1 className="display-4 font-weight-bold">{tag.name}</h1>
                 {blogs.map((b, i) => (
                   <div key={i}>
                     <Card blog={b} />
@@ -33,14 +32,14 @@ const Category = props => {
   );
 };
 
-Category.getInitialProps = ({ query }) => {
-  return singleCategory(query.slug).then(data => {
+Tag.getInitialProps = ({ query }) => {
+  return readTag(query.slug).then(data => {
     if (data.error) {
       console.log(data.error);
     } else {
-      return { category: data.category, blogs: data.blogs };
+      return { tag: data.tag, blogs: data.blogs };
     }
   });
 };
 
-export default Category;
+export default Tag;
