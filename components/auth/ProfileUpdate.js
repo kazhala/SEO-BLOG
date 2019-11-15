@@ -3,6 +3,7 @@ import { useReducer, useEffect } from 'react';
 import Router from 'next/router';
 import { getCookie, isAuth } from '../../actions/auth';
 import { getProfile, update } from '../../actions/user';
+import { API } from '../../config';
 
 const initialState = {
   username: '',
@@ -15,6 +16,7 @@ const initialState = {
   loading: false,
   photo: '',
   userData: '',
+  imgSrc: '',
 };
 
 const reducer = (state, action) => {
@@ -26,7 +28,20 @@ const reducer = (state, action) => {
         loading: false,
         success: false,
       };
+    case 'imgSrc':
+      return { ...state, imgSrc: action.payload };
     case 'mount':
+      return {
+        ...state,
+        username: action.payload.username,
+        name: action.payload.name,
+        email: action.payload.email,
+        about: action.payload.about,
+        userData: new FormData(),
+        success: false,
+        error: false,
+      };
+    case 'success':
       return {
         ...state,
         username: action.payload.username,
@@ -79,6 +94,8 @@ const reducer = (state, action) => {
       };
     case 'loading':
       return { ...state, loading: true };
+    case 'restart':
+      return { ...state, success: false };
     default:
       return state;
   }
@@ -92,6 +109,7 @@ const ProfileUpdate = () => {
     username,
     name,
     email,
+    imgSrc,
     password,
     error,
     success,
@@ -106,12 +124,14 @@ const ProfileUpdate = () => {
       if (data.error) {
         dispatch({ type: 'error', payload: data.error });
       } else {
+        dispatch({ type: 'imgSrc', payload: data.username });
         dispatch({ type: 'mount', payload: data });
       }
     });
   }, [token]);
 
   const handleChange = (e, name) => {
+    dispatch({ type: 'restart' });
     //check the incoming event type
     const value = name === 'photo' ? e.target.files[0] : e.target.value;
     //set the form data
@@ -125,11 +145,11 @@ const ProfileUpdate = () => {
     e.preventDefault();
     dispatch({ type: 'loading' });
     update(token, userData).then(data => {
-      console.log(data);
       if (data.error) {
         dispatch({ type: 'error', payload: data.error });
       } else {
-        dispatch({ type: 'mount', payload: data });
+        dispatch({ type: 'imgSrc', payload: data.username });
+        dispatch({ type: 'success', payload: data });
       }
     });
   };
@@ -154,6 +174,7 @@ const ProfileUpdate = () => {
           type="text"
           className="form-control"
           value={username}
+          required
           onChange={e => handleChange(e, 'username')}
         />
       </div>
@@ -163,6 +184,7 @@ const ProfileUpdate = () => {
           type="text"
           className="form-control"
           value={name}
+          required
           onChange={e => handleChange(e, 'name')}
         />
       </div>
@@ -173,6 +195,7 @@ const ProfileUpdate = () => {
           type="text"
           className="form-control"
           value={email}
+          required
           onChange={e => handleChange(e, 'email')}
         />
       </div>
@@ -188,7 +211,7 @@ const ProfileUpdate = () => {
       <div className="form-group">
         <label className="text-muted">password</label>
         <input
-          type="text"
+          type="password"
           className="form-control"
           value={password}
           onChange={e => handleChange(e, 'password')}
@@ -200,12 +223,40 @@ const ProfileUpdate = () => {
     </form>
   );
 
+  const showError = () => {
+    return error && <div className="alert alert-danger">{error}</div>;
+  };
+
+  const showSuccess = () => {
+    return (
+      success && <div className="alert alert-success">Profile updated</div>
+    );
+  };
+
+  const showLoading = () => {
+    return loading && <div className="alert alert-info">Loading...</div>;
+  };
+
   return (
     <React.Fragment>
       <div className="container">
         <div className="row">
-          <div className="col-md-4">{JSON.stringify({ error, success })}</div>
-          <div className="col-md-8 mb-5">{profileUpdateForm()}</div>
+          <div className="col-md-4">
+            {imgSrc && (
+              <img
+                src={`${API}/user/photo/${imgSrc}`}
+                alt="user profile"
+                className="img img-thumbnail img-fluid mb-3"
+                style={{ maxHeight: 'auto', maxWidth: '100%' }}
+              />
+            )}
+          </div>
+          <div className="col-md-8 mb-5">
+            {showError()}
+            {showLoading()}
+            {showSuccess()}
+            {profileUpdateForm()}
+          </div>
         </div>
       </div>
     </React.Fragment>
