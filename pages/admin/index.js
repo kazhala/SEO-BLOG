@@ -11,6 +11,7 @@ const AdminIndex = props => {
             <div className="col-md-12 pt-5 pb-5">
               <h2>Admin Dashboard</h2>
             </div>
+
             <div className="col-md-4">
               <ul className="list-group">
                 <li className="list-group-item">
@@ -18,17 +19,26 @@ const AdminIndex = props => {
                     <a>Create Category</a>
                   </Link>
                 </li>
+
                 <li className="list-group-item">
                   <a href="/admin/crud/category-tag">Create Tag</a>
                 </li>
+
                 <li className="list-group-item">
                   <Link href="/admin/crud/blog">
                     <a>Create Blog</a>
                   </Link>
                 </li>
+
                 <li className="list-group-item">
                   <Link href="/admin/crud/blogs">
                     <a>Update/Delete Blogs</a>
+                  </Link>
+                </li>
+
+                <li className="list-group-item">
+                  <Link href="/user/update">
+                    <a>Update profile</a>
                   </Link>
                 </li>
               </ul>

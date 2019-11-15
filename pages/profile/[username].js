@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { userPublicProfile } from '../../actions/user';
 import Layout from '../../components/Layout';
-import { DOMAIN, APP_NAME, FB_APP_ID } from '../../config';
+import { DOMAIN, APP_NAME, FB_APP_ID, API } from '../../config';
 import moment from 'moment';
 
 const UserProfile = props => {
@@ -55,13 +55,22 @@ const UserProfile = props => {
             <div className="col-md-12">
               <div className="card">
                 <div className="card-body">
-                  <h5>{user.name}</h5>
-                  {/* <Link href={`${user.profile}`}> */}
-                  {/*   <a>View Profile</a> */}
-                  {/* </Link> */}
-                  <p className="text-muted">
-                    Joined {moment(user.createdAt).fromNow()}
-                  </p>
+                  <div className="row">
+                    <div className="col-md-8">
+                      <h5>{user.name}</h5>
+                      <p className="text-muted">
+                        Joined {moment(user.createdAt).fromNow()}
+                      </p>
+                    </div>
+                    <div className="col-md-4">
+                      <img
+                        src={`${API}/user/photo/${user.username}`}
+                        alt="user profile"
+                        className="img img-thumbnail img-fluid mb-3"
+                        style={{ maxHeight: '150px', maxWidth: '100%' }}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
