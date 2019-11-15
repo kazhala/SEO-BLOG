@@ -20,7 +20,12 @@ const initialState = {
 const reducer = (state, action) => {
   switch (action.type) {
     case 'error':
-      return { ...state, error: action.payload };
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+        success: false,
+      };
     case 'mount':
       return {
         ...state,
@@ -28,7 +33,52 @@ const reducer = (state, action) => {
         name: action.payload.name,
         email: action.payload.email,
         about: action.payload.about,
+        userData: new FormData(),
+        loading: false,
+        success: true,
       };
+    case 'username':
+      return {
+        ...state,
+        username: action.payload,
+        error: '',
+        loading: false,
+        success: false,
+      };
+    case 'name':
+      return {
+        ...state,
+        name: action.payload,
+        error: '',
+        loading: false,
+        success: false,
+      };
+    case 'email':
+      return {
+        ...state,
+        email: action.payload,
+        error: '',
+        loading: false,
+        success: false,
+      };
+    case 'password':
+      return {
+        ...state,
+        password: action.payload,
+        error: '',
+        loading: false,
+        success: false,
+      };
+    case 'about':
+      return {
+        ...state,
+        about: action.payload,
+        error: '',
+        loading: false,
+        success: false,
+      };
+    case 'loading':
+      return { ...state, loading: true };
     default:
       return state;
   }
@@ -61,10 +111,27 @@ const ProfileUpdate = () => {
     });
   }, [token]);
 
-  const handleChange = (e, name) => {};
+  const handleChange = (e, name) => {
+    //check the incoming event type
+    const value = name === 'photo' ? e.target.files[0] : e.target.value;
+    //set the form data
+    userData.set(name, value);
+    if (name !== 'photo') {
+      dispatch({ type: name, payload: value });
+    }
+  };
 
   const handleSubmit = e => {
     e.preventDefault();
+    dispatch({ type: 'loading' });
+    update(token, userData).then(data => {
+      console.log(data);
+      if (data.error) {
+        dispatch({ type: 'error', payload: data.error });
+      } else {
+        dispatch({ type: 'mount', payload: data });
+      }
+    });
   };
 
   const profileUpdateForm = () => (
@@ -128,9 +195,7 @@ const ProfileUpdate = () => {
         />
       </div>
       <div>
-        <button className="btn btn-primary" type="submit">
-          Submit
-        </button>
+        <button className="btn btn-primary">Submit</button>
       </div>
     </form>
   );
@@ -139,7 +204,7 @@ const ProfileUpdate = () => {
     <React.Fragment>
       <div className="container">
         <div className="row">
-          <div className="col-md-4">image</div>
+          <div className="col-md-4">{JSON.stringify({ error, success })}</div>
           <div className="col-md-8 mb-5">{profileUpdateForm()}</div>
         </div>
       </div>
