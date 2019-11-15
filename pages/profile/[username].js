@@ -9,6 +9,16 @@ const UserProfile = props => {
   const { user, blogs } = props;
   console.log(user);
 
+  const showUserBlogs = () => {
+    return blogs.map((b, i) => (
+      <div key={i} className="mt-4 mb-4">
+        <Link href={`/blogs/${b.slug}`}>
+          <a className="lead">{b.title}</a>
+        </Link>
+      </div>
+    ));
+  };
+
   return (
     <React.Fragment>
       <Layout>
@@ -36,18 +46,17 @@ const UserProfile = props => {
             <div className="col-md-6">
               <div className="card">
                 <div className="card-body">
-                  <h5 className="card-title bg-primary pt-4 pb-4 pl-4 pr-4">
+                  <h5 className="card-title bg-primary pt-4 pb-4 pl-4 pr-4 text-white">
                     Recent blogs by {user.name}
                   </h5>
-                  <br />
-                  <p>show user blogs</p>
+                  {showUserBlogs()}
                 </div>
               </div>
             </div>
             <div className="col-md-6">
               <div className="card">
                 <div className="card-body">
-                  <h5 className="card-title bg-primary pt-4 pb-4 pl-4 pr-4">
+                  <h5 className="card-title bg-primary pt-4 pb-4 pl-4 pr-4 text-white">
                     Message {user.name}
                   </h5>
                   <br />
