@@ -17,6 +17,7 @@ const initialState = {
   photo: '',
   userData: '',
   imgSrc: '',
+  containsImg: false,
 };
 
 const reducer = (state, action) => {
@@ -30,6 +31,7 @@ const reducer = (state, action) => {
       };
     case 'imgSrc':
       return { ...state, imgSrc: action.payload };
+
     case 'mount':
       return {
         ...state,
@@ -40,6 +42,7 @@ const reducer = (state, action) => {
         userData: new FormData(),
         success: false,
         error: false,
+        containsImg: false,
       };
     case 'success':
       return {
@@ -52,6 +55,7 @@ const reducer = (state, action) => {
         loading: false,
         success: true,
       };
+
     case 'username':
       return {
         ...state,
@@ -76,6 +80,7 @@ const reducer = (state, action) => {
         loading: false,
         success: false,
       };
+
     case 'password':
       return {
         ...state,
@@ -96,6 +101,8 @@ const reducer = (state, action) => {
       return { ...state, loading: true };
     case 'restart':
       return { ...state, success: false };
+    case 'containsImg':
+      return { ...state, containsImg: true };
     default:
       return state;
   }
@@ -117,6 +124,7 @@ const ProfileUpdate = () => {
     photo,
     userData,
     about,
+    containsImg,
   } = updateState;
 
   useEffect(() => {
@@ -134,6 +142,9 @@ const ProfileUpdate = () => {
     dispatch({ type: 'restart' });
     //check the incoming event type
     const value = name === 'photo' ? e.target.files[0] : e.target.value;
+    if (name === 'photo') {
+      dispatch({ type: 'containsImg' });
+    }
     //set the form data
     userData.set(name, value);
     if (name !== 'photo') {
@@ -150,6 +161,9 @@ const ProfileUpdate = () => {
       } else {
         dispatch({ type: 'imgSrc', payload: data.username });
         dispatch({ type: 'success', payload: data });
+        if (containsImg) {
+          window.location.reload();
+        }
       }
     });
   };
