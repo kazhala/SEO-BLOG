@@ -7,7 +7,6 @@ import moment from 'moment';
 
 const UserProfile = props => {
   const { user, blogs, query } = props;
-  console.log(user);
 
   const head = () => (
     <Head>
