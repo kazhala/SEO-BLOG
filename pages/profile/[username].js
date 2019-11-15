@@ -56,9 +56,9 @@ const UserProfile = props => {
               <div className="card">
                 <div className="card-body">
                   <h5>{user.name}</h5>
-                  <Link href={`${user.profile}`}>
-                    <a>View Profile</a>
-                  </Link>
+                  {/* <Link href={`${user.profile}`}> */}
+                  {/*   <a>View Profile</a> */}
+                  {/* </Link> */}
                   <p className="text-muted">
                     Joined {moment(user.createdAt).fromNow()}
                   </p>
