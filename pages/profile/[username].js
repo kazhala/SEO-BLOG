@@ -6,8 +6,36 @@ import { DOMAIN, APP_NAME, FB_APP_ID } from '../../config';
 import moment from 'moment';
 
 const UserProfile = props => {
-  const { user, blogs } = props;
+  const { user, blogs, query } = props;
   console.log(user);
+
+  const head = () => (
+    <Head>
+      <title>
+        {user.username} | {APP_NAME}
+      </title>
+      <meta name="description" content={`Blogs by ${user.username}`} />
+      <link rel="canonical" href={`${DOMAIN}/profile/${query.username}`} />
+
+      {/* below is for facebook link share data show */}
+      <meta property="og:title" content={`${user.username} | ${APP_NAME}`} />
+      <meta property="og:description" content={`Blogs by ${user.username}`} />
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content={`${DOMAIN}/profile/${query.username}`} />
+      <meta property="og:site_name" content={`${APP_NAME}`} />
+
+      <meta
+        property="og:image"
+        content={`${DOMAIN}/static/images/seo-blog.png`}
+      />
+      <meta
+        property="og:image:secure_url"
+        content={`${DOMAIN}/static/images/seo-blog.png`}
+      />
+      <meta property="og:image:type" content="image/png" />
+      <meta property="fb:app_id" content={`${FB_APP_ID}`} />
+    </Head>
+  );
 
   const showUserBlogs = () => {
     return blogs.map((b, i) => (
@@ -21,6 +49,7 @@ const UserProfile = props => {
 
   return (
     <React.Fragment>
+      {head()}
       <Layout>
         <div className="container">
           <div className="row">
@@ -76,7 +105,7 @@ UserProfile.getInitialProps = ({ query }) => {
     if (data.error) {
       console.log(data.error);
     } else {
-      return { user: data.user, blogs: data.blogs };
+      return { query, user: data.user, blogs: data.blogs };
     }
   });
 };
