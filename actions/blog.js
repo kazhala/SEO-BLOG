@@ -1,5 +1,6 @@
 import fetch from 'isomorphic-fetch';
 import { API } from '../config';
+import queryString from 'query-string';
 
 export const createBlog = async (blog, token) => {
   try {
@@ -104,6 +105,19 @@ export const updateBlog = async (blog, token, slug) => {
         Authorization: `Bearer ${token}`,
       },
       body: blog,
+    });
+    return res.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const listSearch = async params => {
+  try {
+    let query = queryString.stringify(params);
+    console.log('query', query);
+    const res = await fetch(`${API}/blogs/search?${query}`, {
+      method: 'GET',
     });
     return res.json();
   } catch (err) {
