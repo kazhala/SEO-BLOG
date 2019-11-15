@@ -115,7 +115,6 @@ export const updateBlog = async (blog, token, slug) => {
 export const listSearch = async params => {
   try {
     let query = queryString.stringify(params);
-    console.log('query', query);
     const res = await fetch(`${API}/blogs/search?${query}`, {
       method: 'GET',
     });

@@ -46,6 +46,13 @@ const Search = () => {
     return (
       <div className="jumbotron bg-white">
         {message && <p className="pt-4 text-muted font-italic">{message}</p>}
+        {results.map((blog, i) => (
+          <div key={i}>
+            <Link href={`/blogs/${blog.slug}`}>
+              <a className="text-primary">{blog.title}</a>
+            </Link>
+          </div>
+        ))}
       </div>
     );
   };
@@ -74,6 +81,11 @@ const Search = () => {
   return (
     <div className="container-fluid">
       <div className="pt-3 pb-5">{searchForm()}</div>
+      {searched && (
+        <div style={{ marginTop: '-120px', marginBottom: '-80px' }}>
+          {searchedBlogs(results)}
+        </div>
+      )}
     </div>
   );
 };
