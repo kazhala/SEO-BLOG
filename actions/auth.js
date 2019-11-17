@@ -5,14 +5,16 @@ import Router from 'next/router';
 
 export const handleResponse = response => {
   if (response.status === 401) {
-    removeCookie('token');
-    removeLocalStorage('user');
-    Router.push({
-      pathname: '/signin',
-      query: {
-        message: 'Your session is expired. Please signin',
-      },
+    signout(() => {
+      Router.push({
+        pathname: '/signin',
+        query: {
+          message: 'Your session is expired. Please signin',
+        },
+      });
     });
+  } else {
+    return;
   }
 };
 
