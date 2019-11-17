@@ -1,6 +1,20 @@
 import fetch from 'isomorphic-fetch';
 import { API } from '../config';
 import cookie from 'js-cookie';
+import Router from 'next/router';
+
+export const handleResponse = response => {
+  if (response.status === 401) {
+    removeCookie('token');
+    removeLocalStorage('user');
+    Router.push({
+      pathname: '/signin',
+      query: {
+        message: 'Your session is expired. Please signin',
+      },
+    });
+  }
+};
 
 export const signup = async user => {
   try {
@@ -78,7 +92,7 @@ export const setLocalStorage = (key, value) => {
   }
 };
 
-export const removeLocalStorage = (key, value) => {
+export const removeLocalStorage = key => {
   if (process.browser) {
     localStorage.removeItem(key);
   }

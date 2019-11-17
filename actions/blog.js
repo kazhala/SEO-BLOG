@@ -1,7 +1,7 @@
 import fetch from 'isomorphic-fetch';
 import { API } from '../config';
 import queryString from 'query-string';
-import { isAuth } from './auth';
+import { isAuth, handleResponse } from './auth';
 
 export const createBlog = async (blog, token) => {
   try {
@@ -21,6 +21,7 @@ export const createBlog = async (blog, token) => {
       },
       body: blog,
     });
+    handleResponse(res);
     return res.json();
   } catch (err) {
     console.log(err);
@@ -113,6 +114,7 @@ export const removeBlog = async (slug, token) => {
         Authorization: `Bearer ${token}`,
       },
     });
+    handleResponse(res);
     return res.json();
   } catch (err) {
     console.log(err);
@@ -136,6 +138,7 @@ export const updateBlog = async (blog, token, slug) => {
       },
       body: blog,
     });
+    handleResponse(res);
     return res.json();
   } catch (err) {
     console.log(err);
