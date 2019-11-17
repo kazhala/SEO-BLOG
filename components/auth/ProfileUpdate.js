@@ -4,6 +4,7 @@ import Router from 'next/router';
 import { getCookie, isAuth } from '../../actions/auth';
 import { getProfile, update } from '../../actions/user';
 import { API } from '../../config';
+import { updateUser } from '../../actions/auth';
 
 const initialState = {
   username: '',
@@ -159,11 +160,13 @@ const ProfileUpdate = () => {
       if (data.error) {
         dispatch({ type: 'error', payload: data.error });
       } else {
-        dispatch({ type: 'imgSrc', payload: data.username });
-        dispatch({ type: 'success', payload: data });
-        if (containsImg) {
-          window.location.reload();
-        }
+        updateUser(data, () => {
+          dispatch({ type: 'imgSrc', payload: data.username });
+          dispatch({ type: 'success', payload: data });
+          if (containsImg) {
+            window.location.reload();
+          }
+        });
       }
     });
   };
