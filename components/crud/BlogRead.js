@@ -21,14 +21,15 @@ const reducer = (state, action) => {
   }
 };
 
-const BlogRead = () => {
+const BlogRead = props => {
   const [blogState, dispatch] = useReducer(reducer, initialState);
   const token = getCookie('token');
+  const { username } = props;
 
   const { blogs, message } = blogState;
 
   const loadBlogs = () => {
-    list().then(data => {
+    list(username).then(data => {
       if (data.error) {
         console.log(data.error);
       } else {

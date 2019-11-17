@@ -1,10 +1,19 @@
 import fetch from 'isomorphic-fetch';
 import { API } from '../config';
 import queryString from 'query-string';
+import { isAuth } from './auth';
 
 export const createBlog = async (blog, token) => {
   try {
-    const res = await fetch(`${API}/blog`, {
+    let createBlogEndpoint;
+
+    if (isAuth() && isAuth().role === 1) {
+      createBlogEndpoint = `${API}/blog`;
+    } else if (isAuth() && isAuth().role === 0) {
+      createBlogEndpoint = `${API}/user/blog`;
+    }
+
+    const res = await fetch(`${createBlogEndpoint}`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -65,9 +74,16 @@ export const listRelated = async blog => {
   }
 };
 
-export const list = async () => {
+export const list = async username => {
   try {
-    const res = await fetch(`${API}/blogs`, {
+    let listBlogEndpoint;
+
+    if (username) {
+      listBlogEndpoint = `${API}/${username}/blogs`;
+    } else {
+      listBlogEndpoint = `${API}/blogs`;
+    }
+    const res = await fetch(`${listBlogEndpoint}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',

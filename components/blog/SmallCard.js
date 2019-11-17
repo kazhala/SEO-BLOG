@@ -13,7 +13,7 @@ const SmallCard = props => {
           <a>
             <img
               className="img img-fluid"
-              style={{ maxHeight: '200px', width: '100%' }}
+              style={{ height: '200px', width: '100%' }}
               src={`${API}/blog/photo/${blog.slug}`}
               alt={blog.title}
             />
