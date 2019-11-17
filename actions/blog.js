@@ -98,7 +98,14 @@ export const list = async username => {
 
 export const removeBlog = async (slug, token) => {
   try {
-    const res = await fetch(`${API}/blog/${slug}`, {
+    let deleteBlogEndpoint;
+
+    if (isAuth() && isAuth().role === 1) {
+      deleteBlogEndpoint = `${API}/blog/${slug}`;
+    } else if (isAuth() && isAuth().role === 0) {
+      deleteBlogEndpoint = `${API}/user/blog/${slug}`;
+    }
+    const res = await fetch(`${deleteBlogEndpoint}`, {
       method: 'DELETE',
       headers: {
         Accept: 'application/json',
@@ -114,7 +121,14 @@ export const removeBlog = async (slug, token) => {
 
 export const updateBlog = async (blog, token, slug) => {
   try {
-    const res = await fetch(`${API}/blog/${slug}`, {
+    let updateBlogEndpoint;
+
+    if (isAuth() && isAuth().role === 1) {
+      updateBlogEndpoint = `${API}/blog/${slug}`;
+    } else if (isAuth() && isAuth().role === 0) {
+      updateBlogEndpoint = `${API}/user/blog/${slug}`;
+    }
+    const res = await fetch(`${updateBlogEndpoint}`, {
       method: 'PUT',
       headers: {
         Accept: 'application/json',

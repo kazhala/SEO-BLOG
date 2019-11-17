@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useReducer, useEffect } from 'react';
+import { useReducer, useEffect, useCallback } from 'react';
 import Router from 'next/router';
 import { getCookie, isAuth } from '../../actions/auth';
 import { list, removeBlog } from '../../actions/blog';
@@ -28,7 +28,7 @@ const BlogRead = props => {
 
   const { blogs, message } = blogState;
 
-  const loadBlogs = () => {
+  const loadBlogs = useCallback(() => {
     list(username).then(data => {
       if (data.error) {
         console.log(data.error);
@@ -36,12 +36,12 @@ const BlogRead = props => {
         dispatch({ type: 'blogs', payload: data });
       }
     });
-  };
+  }, [username]);
 
   //load all the blogs when the component mounts
   useEffect(() => {
     loadBlogs();
-  }, []);
+  }, [loadBlogs]);
 
   const deleteBlog = slug => {
     removeBlog(slug, token).then(data => {
@@ -64,7 +64,7 @@ const BlogRead = props => {
   const showUpdateButton = blog => {
     if (isAuth() && isAuth().role === 0) {
       return (
-        <Link href={`/user/crud/blog/${blog.slug}`}>
+        <Link href={`/user/crud/${blog.slug}`}>
           <a className="ml-2 btn btn-sm btn-warning">Update</a>
         </Link>
       );
