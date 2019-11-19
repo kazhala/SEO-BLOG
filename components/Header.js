@@ -94,11 +94,12 @@ const Header = props => {
             )}
 
             <NavItem>
-              <Link href="/user/crud/blog">
-                <NavLink className="btn btn-primary text-light">
-                  Write a blog
-                </NavLink>
-              </Link>
+              <NavLink
+                className="btn btn-primary text-light"
+                href="/user/crud/blog"
+              >
+                Write a blog
+              </NavLink>
             </NavItem>
           </Nav>
         </Collapse>

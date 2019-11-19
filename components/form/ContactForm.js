@@ -1,5 +1,4 @@
 import { useReducer } from 'react';
-import Link from 'next/link';
 import { emailContactForm } from '../../actions/form';
 
 const reducer = (state, action) => {
@@ -59,9 +58,8 @@ const ContactForm = props => {
   });
 
   const { authorEmail } = props;
-  console.log(authorEmail);
 
-  const { message, name, email, sent, buttonText, success, error } = formState;
+  const { message, name, email, buttonText, success, error } = formState;
 
   const clickSubmit = e => {
     e.preventDefault();
