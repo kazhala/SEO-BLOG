@@ -132,3 +132,35 @@ export const updateUser = (user, next) => {
     }
   }
 };
+
+export const forgotPassword = async email => {
+  try {
+    let res = await fetch(`${API}/forgot-password`, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(email),
+    });
+    return res.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const resetPassword = async resetInfo => {
+  try {
+    let res = await fetch(`${API}/reset-password`, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(resetInfo),
+    });
+    return res.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
