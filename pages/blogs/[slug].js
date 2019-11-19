@@ -140,7 +140,7 @@ const SingleBlog = props => {
                   <div className="row">{showRelatedBlogs()}</div>
                 </div>
 
-                <div className="container pb-5">{showComments()}</div>
+                <div className="container pt-5 pb-5">{showComments()}</div>
               </section>
             </div>
           </article>
