@@ -28,6 +28,20 @@ const reducer = (state, action) => {
         success: false,
         buttonText: 'Send Message',
       };
+    case 'submitStart':
+      return { ...state, buttonText: 'Sending...' };
+    case 'error':
+      return { ...state, buttonText: 'Error', error: action.payload };
+    case 'success':
+      return {
+        ...state,
+        sent: true,
+        name: '',
+        message: '',
+        email: '',
+        buttonText: 'Sent',
+        success: true,
+      };
     default:
       return state;
   }
@@ -48,10 +62,30 @@ const ContactForm = props => {
 
   const clickSubmit = e => {
     e.preventDefault();
+    dispatch({ type: 'submitStart' });
+    emailContactForm({ name, email, message }).then(data => {
+      if (data.error) {
+        dispatch({ type: 'error', payload: data.error });
+      } else {
+        dispatch({ type: 'success' });
+      }
+    });
   };
 
   const handleChange = (e, name) => {
     dispatch({ type: name, payload: e.target.value });
+  };
+
+  const showSuccess = () => {
+    return (
+      success && (
+        <div className="alert alert-info">Thank you for contacting us.</div>
+      )
+    );
+  };
+
+  const showError = () => {
+    return error && <div className="alert alert-danger">{error}</div>;
   };
 
   const contactForm = () => {
@@ -96,7 +130,13 @@ const ContactForm = props => {
     );
   };
 
-  return <React.Fragment>{contactForm()}</React.Fragment>;
+  return (
+    <React.Fragment>
+      {showSuccess()}
+      {showError()}
+      {contactForm()}
+    </React.Fragment>
+  );
 };
 
 export default ContactForm;
