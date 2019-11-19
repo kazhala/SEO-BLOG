@@ -14,9 +14,7 @@ const UserIndex = props => {
             <div className="col-md-4">
               <ul className="list-group">
                 <li className="list-group-item">
-                  <Link href="/user/crud/blog">
-                    <a>Create Blog</a>
-                  </Link>
+                  <a href="/user/crud/blog">Create Blog</a>
                 </li>
                 <li className="list-group-item">
                   <Link href="/user/crud/blogs">
