@@ -4,6 +4,7 @@ import { userPublicProfile } from '../../actions/user';
 import Layout from '../../components/Layout';
 import { DOMAIN, APP_NAME, FB_APP_ID, API } from '../../config';
 import moment from 'moment';
+import ContactForm from '../../components/form/ContactForm';
 
 const UserProfile = props => {
   const { user, blogs, query } = props;
@@ -97,7 +98,7 @@ const UserProfile = props => {
                     Message {user.name}
                   </h5>
                   <br />
-                  <p>contact form</p>
+                  <ContactForm authorEmail={user.email} />
                 </div>
               </div>
             </div>

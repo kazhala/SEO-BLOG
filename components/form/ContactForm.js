@@ -58,12 +58,15 @@ const ContactForm = props => {
     error: false,
   });
 
+  const { authorEmail } = props;
+  console.log(authorEmail);
+
   const { message, name, email, sent, buttonText, success, error } = formState;
 
   const clickSubmit = e => {
     e.preventDefault();
     dispatch({ type: 'submitStart' });
-    emailContactForm({ name, email, message }).then(data => {
+    emailContactForm({ authorEmail, name, email, message }).then(data => {
       if (data.error) {
         dispatch({ type: 'error', payload: data.error });
       } else {
@@ -79,7 +82,7 @@ const ContactForm = props => {
   const showSuccess = () => {
     return (
       success && (
-        <div className="alert alert-info">Thank you for contacting us.</div>
+        <div className="alert alert-info">Thank you for contacting.</div>
       )
     );
   };
