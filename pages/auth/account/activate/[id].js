@@ -73,7 +73,7 @@ const ActivateAccount = props => {
   return (
     <Layout>
       <div className="container">
-        <h3>Hey {name}, Ready to activate your account?</h3>
+        <h3 className="pb-4">Hey {name}, Ready to activate your account?</h3>
         {showLoading()}
         {error && error}
         {success &&
