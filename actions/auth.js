@@ -180,3 +180,19 @@ export const resetPassword = async resetInfo => {
     console.log(err);
   }
 };
+
+export const loginWithGoogle = async user => {
+  try {
+    let res = await fetch(`${API}/google-login`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    });
+    return res.json();
+  } catch (err) {
+    console.log(err);
+  }
+};

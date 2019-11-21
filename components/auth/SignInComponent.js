@@ -5,6 +5,7 @@ import { useReducer, useEffect } from 'react';
 import { isAuth, signin, authenticate } from '../../actions/auth';
 import Router from 'next/router';
 import Link from 'next/link';
+import LoginGoogle from './LoginGoogle';
 
 //use reducer initial state
 const initialState = {
@@ -117,6 +118,7 @@ const SignInComponent = props => {
       {showError()}
       {showMessage()}
       {showLoading()}
+      <LoginGoogle />
       {showForm && signinForm()}
       <br />
       <Link href="/auth/password/forgot">
