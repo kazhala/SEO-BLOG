@@ -1,6 +1,5 @@
-import renderHTML from 'react-render-html';
 import Link from 'next/link';
-import { useReducer, useEffect } from 'react';
+import { useReducer } from 'react';
 import { listSearch } from '../../actions/blog';
 
 const initialState = {

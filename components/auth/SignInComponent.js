@@ -33,7 +33,7 @@ const reducer = (state, action) => {
   }
 };
 
-const SignInComponent = props => {
+const SignInComponent = () => {
   const [formState, dispatch] = useReducer(reducer, initialState);
   const { email, password, loading, error, message, showForm } = formState;
 

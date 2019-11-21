@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { useReducer, useEffect } from 'react';
 import Router from 'next/router';
 import dynamic from 'next/dynamic';

@@ -1,7 +1,5 @@
 import { useReducer, useEffect } from 'react';
-import Link from 'next/link';
-import Router from 'next/router';
-import { isAuth, getCookie } from '../../actions/auth';
+import { getCookie } from '../../actions/auth';
 import { create, getCategories, removeCategory } from '../../actions/category';
 
 //initial states
@@ -176,7 +174,7 @@ const Category = () => {
   };
 
   //remove the messages when mouse move
-  const mouseMoveHandler = e => {
+  const mouseMoveHandler = () => {
     dispatch({ type: 'clear' });
   };
 

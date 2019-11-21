@@ -1,7 +1,5 @@
-import Link from 'next/link';
 import { useReducer, useEffect } from 'react';
-import Router from 'next/router';
-import { getCookie, isAuth } from '../../actions/auth';
+import { getCookie } from '../../actions/auth';
 import { getProfile, update } from '../../actions/user';
 import { API } from '../../config';
 import { updateUser } from '../../actions/auth';
@@ -122,7 +120,6 @@ const ProfileUpdate = () => {
     error,
     success,
     loading,
-    photo,
     userData,
     about,
     containsImg,

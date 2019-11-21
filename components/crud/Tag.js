@@ -1,7 +1,5 @@
 import { useReducer, useEffect } from 'react';
-import Link from 'next/link';
-import Router from 'next/router';
-import { isAuth, getCookie } from '../../actions/auth';
+import { getCookie } from '../../actions/auth';
 import { create, getTags, removeTag } from '../../actions/tag';
 
 //initial state of the reducer
@@ -177,7 +175,7 @@ const Tag = () => {
   };
 
   //clear the detail when mouse move
-  const mouseMoveHandler = e => {
+  const mouseMoveHandler = () => {
     dispatch({ type: 'clear' });
   };
 

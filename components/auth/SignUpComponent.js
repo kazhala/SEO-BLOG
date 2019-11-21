@@ -2,7 +2,7 @@
  * Sign up form main component
  */
 import { useReducer, useEffect } from 'react';
-import { signup, isAuth, preSignup } from '../../actions/auth';
+import { isAuth, preSignup } from '../../actions/auth';
 import Router from 'next/router';
 
 //use reducer initial state

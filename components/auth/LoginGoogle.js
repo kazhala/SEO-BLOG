@@ -1,4 +1,3 @@
-import { useReducer, useEffect } from 'react';
 import Router from 'next/router';
 import { loginWithGoogle, authenticate, isAuth } from '../../actions/auth';
 import { GOOGLE_CLIENT_ID } from '../../config';
