@@ -34,7 +34,7 @@ const Index = () => {
                   style={{
                     backgroundImage:
                       'url(' +
-                      'https://images.pexels.com/photos/540518/pexels-photo-540518.jpeg' +
+                      'https://images.pexels.com/photos/3172580/pexels-photo-3172580.jpeg' +
                       ')',
                   }}
                 >
@@ -59,7 +59,7 @@ const Index = () => {
                   style={{
                     backgroundImage:
                       'url(' +
-                      'https://images.pexels.com/photos/540518/pexels-photo-540518.jpeg' +
+                      'https://images.pexels.com/photos/3172580/pexels-photo-3172580.jpeg' +
                       ')',
                   }}
                 >
@@ -86,7 +86,7 @@ const Index = () => {
                   style={{
                     backgroundImage:
                       'url(' +
-                      'https://images.pexels.com/photos/540518/pexels-photo-540518.jpeg' +
+                      'https://images.pexels.com/photos/3172580/pexels-photo-3172580.jpeg' +
                       ')',
                   }}
                 >
