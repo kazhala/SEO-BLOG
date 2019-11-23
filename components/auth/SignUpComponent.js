@@ -7,9 +7,9 @@ import Router from 'next/router';
 
 //use reducer initial state
 const initialState = {
-  name: 'Kevin',
-  email: 'kevin7441@gmail.com',
-  password: '111111',
+  name: '',
+  email: '',
+  password: '',
   error: '',
   loading: false,
   message: '',
