@@ -12,6 +12,9 @@
 > If the post is well organized (h1 h2 and some lists), your posts should be indexed by google in a few days (hopefully if my code works as expected 🤞)
 > Good luck and hope you enjoy
 
+> Last but not least, it's Facebook link share friendly as well (Description and image and would display)
+![screen shot](https://bookaz.best/api/product/photo/5dda261a47b990187e10efc2)
+
 ### 🏠 [Homepage](https://kazlog.tech/)
 
 ## Install
