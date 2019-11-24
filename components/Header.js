@@ -8,7 +8,7 @@ import {
   NavItem,
   NavLink,
 } from 'reactstrap';
-import { APP_NAME } from '../config';
+import { APP_NAME, DOMAIN } from '../config';
 import Link from 'next/link';
 import { signout, isAuth } from '../actions/auth';
 import Router from 'next/router';
@@ -30,7 +30,15 @@ const Header = props => {
     <React.Fragment>
       <Navbar color="light" light expand="md">
         <Link href="/">
-          <NavLink className="font-weight-bold">{APP_NAME}</NavLink>
+          <NavLink className="font-weight-bold">
+            <div style={{ width: '7rem', height: '2rem', cursor: 'pointer' }}>
+              <img
+                className="img-fluid"
+                src={`${DOMAIN}/static/images/cover.png`}
+                alt="site logo"
+              />
+            </div>
+          </NavLink>
         </Link>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
