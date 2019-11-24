@@ -126,7 +126,7 @@ const SingleBlog = props => {
                   </div>
                 </div>
 
-                <div className="container">
+                <div className="container" style={{ overflowX: 'hidden' }}>
                   <section>
                     <div className="col-md-12 lead">
                       {renderHTML(blog.body)}
