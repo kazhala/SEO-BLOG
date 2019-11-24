@@ -11,7 +11,7 @@ const Blogs = props => {
   //seo search optimisation (meta tags)
   const head = () => (
     <Head>
-      <title>Programming blogs | {APP_NAME}</title>
+      <title>NERDY blogs | {APP_NAME}</title>
       <meta
         name="description"
         content="Programming blogs and tutorials on react node next vue php laravel and web developemnt"

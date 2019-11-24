@@ -15,6 +15,7 @@ const initialState = {
   blog: {},
   error: '',
   success: false,
+  loading: true,
   formData: '',
   title: '',
   body: {},
@@ -38,9 +39,12 @@ const reducer = (state, action) => {
         tags: action.payload.tag,
         checkedCat: action.payload.blog.categories.map(c => c._id),
         checkedTag: action.payload.blog.tags.map(t => t._id),
+        loading: false,
       };
     case 'error':
-      return { ...state, error: action.payload };
+      return { ...state, error: action.payload, loading: false };
+    case 'loading':
+      return { ...state, loading: true };
     case 'body':
       return { ...state, error: '', body: action.payload };
     case 'title':
@@ -54,6 +58,7 @@ const reducer = (state, action) => {
         ...state,
         title: '',
         success: 'Blog has successfully updated',
+        loading: false,
       };
     default:
       return state;
@@ -73,11 +78,13 @@ const BlogUpdate = props => {
     tags,
     checkedCat,
     checkedTag,
+    loading,
   } = blogState;
   const token = getCookie('token');
 
   useEffect(() => {
     const initBlog = () => {
+      dispatch({ type: 'loading' });
       if (router.query.slug) {
         singleBlog(router.query.slug).then(blog => {
           if (blog.error) {
@@ -195,6 +202,7 @@ const BlogUpdate = props => {
 
   const editBlog = e => {
     e.preventDefault();
+    dispatch({ type: 'loading' });
     updateBlog(formData, token, router.query.slug).then(data => {
       if (data.error) {
         dispatch({ type: 'error', payload: data.error });
@@ -258,10 +266,22 @@ const BlogUpdate = props => {
     return success && <div className="alert alert-success">{success}</div>;
   };
 
+  const showLoading = () =>
+    loading ? (
+      <div className="d-flex justify-content-center">
+        <div className="spinner-border" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      </div>
+    ) : (
+      ''
+    );
+
   return (
     <div className="container-fluid pb-5">
       <div className="row">
         <div className="col-md-8">
+          {showLoading()}
           {updateBlogForm()}
           <div className="pt-3">
             {showError()}

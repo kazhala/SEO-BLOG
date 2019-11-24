@@ -247,9 +247,16 @@ const ProfileUpdate = () => {
     );
   };
 
-  const showLoading = () => {
-    return loading && <div className="alert alert-info">Loading...</div>;
-  };
+  const showLoading = () =>
+    loading ? (
+      <div className="d-flex justify-content-center">
+        <div className="spinner-border" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      </div>
+    ) : (
+      ''
+    );
 
   return (
     <React.Fragment>

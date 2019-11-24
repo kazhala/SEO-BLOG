@@ -14,6 +14,7 @@ const initialState = {
   error: '',
   sizeError: '',
   success: false,
+  loading: false,
   formData: '',
   title: '',
   hidePublishButton: false,
@@ -30,14 +31,15 @@ const reducer = (state, action) => {
     case 'formData':
       return { ...state, formData: new FormData() };
     case 'error':
-      return { ...state, error: action.payload };
+      return { ...state, error: action.payload, loading: false };
     case 'body':
       return { ...state, body: action.payload };
     case 'checkedCat':
       return { ...state, error: '', checkedCat: action.payload };
     case 'checkedTag':
       return { ...state, error: '', checkedTag: action.payload };
-
+    case 'loading':
+      return { ...state, loading: true };
     case 'init':
       //check if there is data in localStorage and save it in state
       return {
@@ -47,6 +49,7 @@ const reducer = (state, action) => {
           : {},
         categories: action.payload.cat,
         tags: action.payload.tag,
+        loading: false,
       };
     case 'success':
       return {
@@ -55,6 +58,7 @@ const reducer = (state, action) => {
         title: '',
         body: {},
         success: `A new blog titled ${action.payload.title} is created`,
+        loading: false,
         checkedCat: [],
         checkedTag: [],
       };
@@ -76,6 +80,7 @@ const BlogCreate = props => {
     formData,
     title,
     tags,
+    loading,
     categories,
     checkedCat,
     checkedTag,
@@ -98,6 +103,7 @@ const BlogCreate = props => {
     };
 
     const initData = storedBlogData => {
+      dispatch({ type: 'loading' });
       getCategories().then(cat => {
         if (cat.error) {
           dispatch({ type: 'error', payload: cat.error });
@@ -121,6 +127,7 @@ const BlogCreate = props => {
   const publishBlog = e => {
     e.preventDefault();
     // console.log('ready to publish blog');
+    dispatch({ type: 'loading' });
     createBlog(formData, token).then(res => {
       if (res.error) {
         dispatch({ type: 'error', payload: res.error });
@@ -210,6 +217,17 @@ const BlogCreate = props => {
     );
   };
 
+  const showLoading = () =>
+    loading ? (
+      <div className="d-flex justify-content-center">
+        <div className="spinner-border" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      </div>
+    ) : (
+      ''
+    );
+
   const showError = () => {
     return error && <div className="alert alert-danger">{error}</div>;
   };
@@ -253,6 +271,7 @@ const BlogCreate = props => {
     <div className="container-fluid pb-5">
       <div className="row">
         <div className="col-md-8">
+          {showLoading()}
           {createBlogForm()}
           <div className="pt-3">
             {showError()}
