@@ -13,7 +13,7 @@
 > Good luck and hope you enjoy
 
 > Last but not least, it's Facebook link share friendly as well (Description and image and would display)
-![screen shot](https://bookaz.best/api/product/photo/5dda261a47b990187e10efc2)
+![scree shot1](https://bookaz.best/api/product/photo/5dda261a47b990187e10efc2)
 ![screen shot2](https://bookaz.best/api/product/photo/5dda294e47b990187e10efc6)
 
 ### 🏠 [Homepage](https://kazlog.tech/)
