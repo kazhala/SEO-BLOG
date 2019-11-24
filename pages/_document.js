@@ -43,7 +43,13 @@ class MyDocument extends Document {
           ></script>
           <script dangerouslySetInnerHTML={this.setGoogleTags()}></script>
         </Head>
-        <body>
+        <body
+          style={{
+            minHeight: '100vh',
+            backgroundImage:
+              'linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%)',
+          }}
+        >
           <Main />
           <NextScript />
         </body>
