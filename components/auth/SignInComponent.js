@@ -9,7 +9,7 @@ import LoginGoogle from './LoginGoogle';
 
 //use reducer initial state
 const initialState = {
-  email: 'kevin7441@gmail.com',
+  email: 'xuzhuang9897@gmail.com',
   password: '111111',
   error: '',
   loading: false,
@@ -67,7 +67,15 @@ const SignInComponent = () => {
   };
 
   const showLoading = () =>
-    loading ? <div className="alert alert-info">Loading...</div> : '';
+    loading ? (
+      <div className="d-flex justify-content-center">
+        <div className="spinner-border" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      </div>
+    ) : (
+      ''
+    );
 
   const showError = () =>
     error ? <div className="alert alert-danger">{error}</div> : '';

@@ -1,5 +1,4 @@
 import Layout from '../components/Layout';
-import Link from 'next/link';
 import SignInComponent from '../components/auth/SignInComponent';
 import { withRouter } from 'next/router';
 
