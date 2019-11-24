@@ -3,12 +3,11 @@ import {
   Collapse,
   Navbar,
   NavbarToggler,
-  NavbarBrand,
   Nav,
   NavItem,
   NavLink,
 } from 'reactstrap';
-import { APP_NAME, DOMAIN } from '../config';
+import { DOMAIN } from '../config';
 import Link from 'next/link';
 import { signout, isAuth } from '../actions/auth';
 import Router from 'next/router';
@@ -21,7 +20,7 @@ Router.onRouteChangeStart = url => NProgress.start();
 Router.onRouteChangeComplete = url => NProgress.done();
 Router.onRouteChangeError = url => NProgress.done();
 
-const Header = props => {
+const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);

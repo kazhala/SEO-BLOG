@@ -36,6 +36,7 @@ class MyDocument extends Document {
             href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"
           />
           <link rel="stylesheet" href="/static/css/styles.css" />
+          <link rel="shortcut icon" href="/static/favicon.ico" />
           <script
             async
             src="https://www.googletagmanager.com/gtag/js?id=UA-153077299-1"
