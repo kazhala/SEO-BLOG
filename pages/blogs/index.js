@@ -43,15 +43,7 @@ const Blogs = props => {
     </Head>
   );
 
-  const {
-    blogs,
-    categories,
-    tags,
-    totalBlogs,
-    router,
-    blogsLimit,
-    blogSkip,
-  } = props;
+  const { blogs, categories, tags, totalBlogs, router, blogsLimit } = props;
 
   //keep track of the blog limit per load (default 2)
   const [limit, setLimit] = useState(blogsLimit);

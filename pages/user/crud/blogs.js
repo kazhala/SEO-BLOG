@@ -1,10 +1,9 @@
 import Layout from '../../../components/Layout';
 import Private from '../../../components/auth/Private';
-import Link from 'next/link';
 import BlogRead from '../../../components/crud/BlogRead';
 import { isAuth } from '../../../actions/auth';
 
-const Blogs = props => {
+const Blogs = () => {
   const username = isAuth() && isAuth().username;
 
   return (

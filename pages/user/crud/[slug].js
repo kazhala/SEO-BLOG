@@ -1,9 +1,8 @@
 import Layout from '../../../components/Layout';
 import Private from '../../../components/auth/Private';
-import Link from 'next/link';
 import BlogUpdate from '../../../components/crud/BlogUpdate';
 
-const SingleUpdate = props => {
+const SingleUpdate = () => {
   return (
     <Layout>
       <Private>

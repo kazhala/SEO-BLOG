@@ -1,9 +1,8 @@
 import Layout from '../../../components/Layout';
 import Admin from '../../../components/auth/Admin';
-import Link from 'next/link';
 import BlogRead from '../../../components/crud/BlogRead';
 
-const Blogs = props => {
+const Blogs = () => {
   return (
     <Layout>
       <Admin>

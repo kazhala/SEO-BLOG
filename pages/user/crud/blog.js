@@ -1,9 +1,8 @@
 import Layout from '../../../components/Layout';
 import Private from '../../../components/auth/Private';
-import Link from 'next/link';
 import BlogCreate from '../../../components/crud/BlogCreate';
 
-const CreateBlog = props => {
+const CreateBlog = () => {
   return (
     <Layout>
       <Private>
