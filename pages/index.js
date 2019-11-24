@@ -9,7 +9,7 @@ const Index = () => {
           <div className="row">
             <div className="col-md-12 text-center">
               <h1 className="display-4 font-weight-bold">
-                PROGRAMMING & WEB DEVELOPMENT BLOGS/TUTORIALS
+                USEFUL BLOGS/TUTORIALS FOR THE FAKE NERDS
               </h1>
             </div>
           </div>
@@ -18,10 +18,7 @@ const Index = () => {
         <div className="container">
           <div className="row">
             <div className="col-md-12 text-center pt-4 pb-5">
-              <p className="lead">
-                Best programming and web development blogs and tutorials on
-                React Node NextJs and JavaScript
-              </p>
+              <p className="lead">We share interesting stuff</p>
             </div>
           </div>
         </div>
@@ -34,21 +31,19 @@ const Index = () => {
                   style={{
                     backgroundImage:
                       'url(' +
-                      'https://images.pexels.com/photos/3172580/pexels-photo-3172580.jpeg' +
+                      'https://i1.wp.com/itsfoss.com/wp-content/uploads/2017/02/vim-tips-tricks.jpg?resize=800%2C450&ssl=1' +
                       ')',
                   }}
                 >
-                  <h2 className="text-shadow text-center h1">React</h2>
+                  <h2 className="text-shadow text-center h1">Vim</h2>
                 </div>
                 <div className="back text-center">
-                  <Link href="/categories/react">
+                  <Link href="/categories/vim">
                     <a>
-                      <h3 className="h1">React Js</h3>
+                      <h3 className="h1">Vim tips</h3>
                     </a>
                   </Link>
-                  <p className="lead">
-                    The world's most popular frontend web development library
-                  </p>
+                  <p className="lead">The most efficient text editor</p>
                 </div>
               </div>
             </div>
@@ -59,21 +54,22 @@ const Index = () => {
                   style={{
                     backgroundImage:
                       'url(' +
-                      'https://images.pexels.com/photos/3172580/pexels-photo-3172580.jpeg' +
+                      'https://images.pexels.com/photos/574070/pexels-photo-574070.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' +
                       ')',
                   }}
                 >
-                  <h2 className="text-shadow text-center h1">Node</h2>
+                  <h2 className="text-shadow text-center h1">
+                    Web Development
+                  </h2>
                 </div>
                 <div className="back text-center">
                   <Link href="/categories/node">
                     <a>
-                      <h3 className="h1">Node Js</h3>
+                      <h3 className="h1">Web Development</h3>
                     </a>
                   </Link>
                   <p className="lead">
-                    The worlds most popular backend development tool for
-                    JavaScript Ninjas
+                    Web development goes a lot deeper than people thinker
                   </p>
                 </div>
               </div>
@@ -86,21 +82,19 @@ const Index = () => {
                   style={{
                     backgroundImage:
                       'url(' +
-                      'https://images.pexels.com/photos/3172580/pexels-photo-3172580.jpeg' +
+                      'https://www.itl.cat/pics/b/5/53009_nerdy-desktop-wallpaper.jpg' +
                       ')',
                   }}
                 >
-                  <h2 className="text-shadow text-center h1">Next</h2>
+                  <h2 className="text-shadow text-center h1">MISC</h2>
                 </div>
                 <div className="back text-center">
                   <Link href="/categories/nextjs">
                     <a>
-                      <h3 className="h1">Next Js</h3>
+                      <h3 className="h1">MISC</h3>
                     </a>
                   </Link>
-                  <p className="lead">
-                    A Production ready web framework for building SEO React apps
-                  </p>
+                  <p className="lead">All the random interesting stuff</p>
                 </div>
               </div>
             </div>

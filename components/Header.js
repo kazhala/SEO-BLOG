@@ -30,7 +30,14 @@ const Header = () => {
       <Navbar color="light" light expand="md">
         <Link href="/">
           <NavLink className="font-weight-bold">
-            <div style={{ width: '7rem', height: '2rem', cursor: 'pointer' }}>
+            <div
+              style={{
+                width: '7rem',
+                height: '2rem',
+                cursor: 'pointer',
+                marginTop: '-5px',
+              }}
+            >
               <img
                 className="img-fluid"
                 src={`${DOMAIN}/static/images/cover.png`}
@@ -42,13 +49,13 @@ const Header = () => {
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="ml-auto" navbar>
-            <NavItem>
+            <NavItem style={{ cursor: 'pointer' }}>
               <Link href="/blogs">
                 <NavLink>Blogs</NavLink>
               </Link>
             </NavItem>
 
-            <NavItem>
+            <NavItem style={{ cursor: 'pointer' }}>
               <Link href="/contact">
                 <NavLink>Contact</NavLink>
               </Link>
@@ -56,12 +63,12 @@ const Header = () => {
 
             {!isAuth() && (
               <React.Fragment>
-                <NavItem>
+                <NavItem style={{ cursor: 'pointer' }}>
                   <Link href="/signin">
                     <NavLink>Sign In</NavLink>
                   </Link>
                 </NavItem>
-                <NavItem>
+                <NavItem style={{ cursor: 'pointer' }}>
                   <Link href="/signup">
                     <NavLink>Sign Up</NavLink>
                   </Link>
@@ -70,7 +77,7 @@ const Header = () => {
             )}
 
             {isAuth() && isAuth().role === 1 && (
-              <NavItem>
+              <NavItem style={{ cursor: 'pointer' }}>
                 <Link href="/admin">
                   <NavLink>{`${isAuth().name}'s DashBoard`}</NavLink>
                 </Link>
@@ -78,7 +85,7 @@ const Header = () => {
             )}
 
             {isAuth() && isAuth().role === 0 && (
-              <NavItem>
+              <NavItem style={{ cursor: 'pointer' }}>
                 <Link href="/user">
                   <NavLink>{`${isAuth().name}'s DashBoard`}</NavLink>
                 </Link>
@@ -100,7 +107,7 @@ const Header = () => {
               </NavItem>
             )}
 
-            <NavItem>
+            <NavItem style={{ cursor: 'pointer' }}>
               <NavLink
                 className="btn btn-primary text-light"
                 href="/user/crud/blog"
