@@ -6,7 +6,11 @@
   </a>
 </p>
 
-> A multi user blogging website built with Next.js + MERN stack
+> A multi user blogging website built with Next.js + MERN stack. 
+> A registered account has already been entered in the input field. Alternativly, you could also register (which would send you a register link).
+> As a registered user, you could do the normal CRUD of your blogs if you do decide to publish(random posts are welcome 😊)
+> If the post is well organized (h1 h2 and some lists), your posts should be indexed by google in a few days (hopefully if my code works as expected 🤞)
+> Good luck and hope you enjoy
 
 ### 🏠 [Homepage](https://kazlog.tech/)
 
